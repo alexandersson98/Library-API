@@ -1,7 +1,6 @@
 package com.example.boilerroom_labb1.exceptions;
 
 
-import com.example.boilerroom_labb1.dto.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +14,34 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(BookNotFoundException.class)
-    public ResponseEntity<ErrorResponse>handleBookNotFound(
+    public ResponseEntity<ApiErrorResponse>handleBookNotFound(
             BookNotFoundException ex,
             HttpServletRequest request
     ){
-        ErrorResponse error = new ErrorResponse(
+        ApiErrorResponse error = new ApiErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 HttpStatus.NOT_FOUND.getReasonPhrase(),
                 ex.getMessage(),
                 request.getRequestURI()
         );
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ApiErrorResponse>handleValidation(
+            ValidationException ex,
+            HttpServletRequest request
+    ) {
+        ApiErrorResponse error = new ApiErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+
+
     }
 }
