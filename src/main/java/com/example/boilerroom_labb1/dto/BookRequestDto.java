@@ -1,4 +1,16 @@
 package com.example.boilerroom_labb1.dto;
 
-public record BookRequestDto(String title, String author, String isbn, int publishedYear) {
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Request object for creating a book")
+public record BookRequestDto(
+        @Schema(description = "Title of the book", example = "Stranger things")
+        String title,
+        @Schema(description = "Author of the book", example = "Matt Duffer")
+        String author,
+        @Schema(description = "ISBN number of the book ", example = "Ev443-FRed")
+        String isbn,
+        @Schema(description = "Year the book was published", example = "1924")
+        int publishedYear) {
 }
