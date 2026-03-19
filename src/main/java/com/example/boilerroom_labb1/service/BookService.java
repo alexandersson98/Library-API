@@ -7,6 +7,7 @@ import com.example.boilerroom_labb1.dto.BookResponseDtoV2;
 import com.example.boilerroom_labb1.dto.BookWrapperDtoV2;
 import com.example.boilerroom_labb1.entity.Book;
 import com.example.boilerroom_labb1.exceptions.BookNotFoundException;
+import com.example.boilerroom_labb1.exceptions.ValidationException;
 import com.example.boilerroom_labb1.mapper.BookMapper;
 import com.example.boilerroom_labb1.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class BookService {
 
     public Book createEntity(BookRequestDto request){
         Book book = mapper.toEntity(request);
+        if (request.publishedYear() <= 1700) {
+            throw new ValidationException("Published year must be greater than 1700");
+        }
         return repository.save(book);
     }
 
