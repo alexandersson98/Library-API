@@ -1,4 +1,4 @@
-package com.example.boilerroom_labb1.dto;
+package com.example.boilerroom_labb1.exceptions;
 
 import java.time.LocalDateTime;
 
