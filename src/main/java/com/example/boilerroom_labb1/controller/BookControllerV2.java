@@ -38,8 +38,8 @@ public class BookControllerV2 {
                 .body(response);
     }
     @GetMapping
-    public ResponseEntity <BookWrapperDtoV2>getAll() {
-        BookWrapperDtoV2 response = service.getAll();
+    public ResponseEntity <BookWrapperDtoV2>getAllV2() {
+        BookWrapperDtoV2 response = service.getAllV2();
         return ResponseEntity
                 .ok()
                 .body(response);

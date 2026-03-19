@@ -3,6 +3,7 @@ package com.example.boilerroom_labb1.controller;
 
 import com.example.boilerroom_labb1.dto.BookRequestDto;
 import com.example.boilerroom_labb1.dto.BookResponseDto;
+import com.example.boilerroom_labb1.dto.BookResponseDtoV2;
 import com.example.boilerroom_labb1.dto.BookWrapperDtoV2;
 import com.example.boilerroom_labb1.entity.Book;
 import com.example.boilerroom_labb1.service.BookService;
@@ -45,7 +46,7 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<BookWrapperDtoV2> getBooks(){
+    public ResponseEntity <List<BookResponseDto>> getBooks(){
         return ResponseEntity.ok(service.getAll());
     }
 }

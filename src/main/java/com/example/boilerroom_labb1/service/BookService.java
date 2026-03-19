@@ -54,17 +54,17 @@ public class BookService {
         return new BookWrapperDtoV2(List.of(dto), "V2");
     }
 
-    public BookWrapperDtoV2 getAll() {
+    public BookWrapperDtoV2 getAllV2() {
         List<BookResponseDtoV2> books = repository.findAll()
                 .stream()
                 .map(mapper::toResponseDtoV2)
                 .toList();
         return new BookWrapperDtoV2(books, "V2");
     }
-    public List<BookResponseDtoV2>getAllV2(){
+    public List<BookResponseDto>getAll(){
         List<Book>all = repository.findAll();
         return all.stream()
-                .map(mapper::toResponseDtoV2)
+                .map(mapper::toResponseDto)
                 .toList();
     }
 }
