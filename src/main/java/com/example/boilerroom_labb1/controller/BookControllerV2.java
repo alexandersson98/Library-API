@@ -5,6 +5,9 @@ import com.example.boilerroom_labb1.dto.BookRequestDto;
 import com.example.boilerroom_labb1.dto.BookResponseDtoV2;
 import com.example.boilerroom_labb1.dto.BookWrapperDtoV2;
 import com.example.boilerroom_labb1.service.BookService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,12 @@ public class BookControllerV2 {
         this.service = service;
     }
 
+    @Operation(summary = "Create book",
+    description = "Add a book to the database")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Created"),
+            @ApiResponse(responseCode = "400", description = "Bad request")
+    })
     @PostMapping
     public ResponseEntity<BookResponseDtoV2> create(@RequestBody BookRequestDto request) {
        BookResponseDtoV2 response = service.createBookV2(request);
@@ -30,13 +39,24 @@ public class BookControllerV2 {
                 .body(response);
     }
 
-    @GetMapping("/id")
+    @Operation(summary = "Get a book with id",
+    description = "Using version2 returns a book with given id")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Found"),
+            @ApiResponse(responseCode = "404", description = "Not found")
+    })
+    @GetMapping("/{id}")
     public ResponseEntity<BookWrapperDtoV2>getBookById(Long id){
         BookWrapperDtoV2 response = service.getBookByIdV2(id);
         return ResponseEntity
                 .ok()
                 .body(response);
     }
+    @Operation(summary = "Get all books",
+    description = "Using version2 returns a wrapped list of all books")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success")
+    })
     @GetMapping
     public ResponseEntity <BookWrapperDtoV2>getAllV2() {
         BookWrapperDtoV2 response = service.getAllV2();
