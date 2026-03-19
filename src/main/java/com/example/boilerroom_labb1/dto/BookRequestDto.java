@@ -7,12 +7,13 @@ import jakarta.validation.constraints.NotBlank;
 @Schema(description = "Request object for creating a book")
 public record BookRequestDto(
         @Schema(description = "Title of the book", example = "Stranger things")
-        @NotBlank
+        @NotBlank(message = "Title must not be blank")
         String title,
         @Schema(description = "Author of the book", example = "Matt Duffer")
-        @NotBlank
+        @NotBlank(message = "Author must not be blank")
         String author,
         @Schema(description = "ISBN number of the book ", example = "Ev443-FRed")
+        @NotBlank(message = "ISBN must not be blank")
         String isbn,
         @Schema(description = "Year the book was published", example = "1924")
         int publishedYear) {
