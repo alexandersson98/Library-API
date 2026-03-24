@@ -1,6 +1,7 @@
 package com.example.boilerroom_labb1.dto;
 
 
+import com.example.boilerroom_labb1.entity.Author;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
@@ -11,7 +12,7 @@ public record BookRequestDto(
         String title,
         @Schema(description = "Author of the book", example = "Matt Duffer")
         @NotBlank(message = "Author must not be blank")
-        String author,
+        Author author,
         @Schema(description = "ISBN number of the book ", example = "Ev443-FRed")
         @NotBlank(message = "ISBN must not be blank")
         String isbn,

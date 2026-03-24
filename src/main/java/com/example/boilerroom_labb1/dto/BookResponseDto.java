@@ -1,5 +1,6 @@
 package com.example.boilerroom_labb1.dto;
 
+import com.example.boilerroom_labb1.entity.Author;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Response object representing a book")
@@ -12,7 +13,7 @@ public record BookResponseDto(
         String title,
 
         @Schema(description = "Author of the book", example = "J.K. Rowling")
-        String author,
+        Author author,
 
         @Schema(description = "ISBN number of the book", example = "9780747532743")
         String isbn,
