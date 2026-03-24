@@ -1,6 +1,7 @@
 package com.example.boilerroom_labb1.integration;
 
 
+import com.example.boilerroom_labb1.TestData;
 import com.example.boilerroom_labb1.controller.BookController;
 
 import com.example.boilerroom_labb1.dto.BookRequestDto;
@@ -62,7 +63,7 @@ public class BookControllerIT {
             Book savedBook = bookRepository.save(
                     new Book(
                             "Flammande Osten",
-                            "Ostsson Bengt",
+                            TestData.createAuthor("Osten Bengtsson"),
                             "45f32",
                             1774
                     )
