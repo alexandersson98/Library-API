@@ -35,7 +35,7 @@ public class BookControllerIT {
    void shouldReturn201AndSaveBookWhenCreatingValidBook(){
             BookRequestDto request = new BookRequestDto(
                     "Stranger Things",
-                    "Matt Duffer",
+                    TestData.createAuthor("Matt Duffer"),
                     "EV443-FRed",
                     2016
             );
