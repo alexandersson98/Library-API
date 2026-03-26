@@ -6,13 +6,12 @@ import com.example.boilerroom_labb1.dto.BookResponseDto;
 import com.example.boilerroom_labb1.dto.BookResponseDtoV2;
 import com.example.boilerroom_labb1.dto.BookWrapperDtoV2;
 import com.example.boilerroom_labb1.entity.Book;
-import com.example.boilerroom_labb1.exceptions.BookNotFoundException;
+import com.example.boilerroom_labb1.exceptions.NotFoundWithIdException;
 import com.example.boilerroom_labb1.exceptions.ValidationException;
 import com.example.boilerroom_labb1.mapper.BookMapper;
 import com.example.boilerroom_labb1.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,13 +47,13 @@ public class BookService {
     public BookResponseDto getBookById(Long id){
         return repository.findById(id)
                 .map(mapper::toResponseDto)
-                .orElseThrow(() -> new BookNotFoundException(id));
+                .orElseThrow(() -> new NotFoundWithIdException("Book not found with id: ", + id));
     }
 
     public BookWrapperDtoV2 getBookByIdV2(Long id) {
         BookResponseDtoV2 dto  = repository.findById(id)
                 .map(mapper::toResponseDtoV2)
-                .orElseThrow(() -> new BookNotFoundException(id));
+                .orElseThrow(() -> new NotFoundWithIdException("Book not found with id: ", + id));
         return new BookWrapperDtoV2(List.of(dto), "V2");
     }
 

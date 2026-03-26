@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
 
-    @ExceptionHandler(BookNotFoundException.class)
+    @ExceptionHandler(NotFoundWithIdException.class)
     public ResponseEntity<ApiErrorResponse>handleBookNotFound(
-            BookNotFoundException ex,
+            NotFoundWithIdException ex,
             HttpServletRequest request
     ){
         ApiErrorResponse error = new ApiErrorResponse(
