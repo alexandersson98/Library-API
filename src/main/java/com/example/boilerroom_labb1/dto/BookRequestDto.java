@@ -1,18 +1,18 @@
 package com.example.boilerroom_labb1.dto;
 
 
-import com.example.boilerroom_labb1.entity.Author;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Schema(description = "Request object for creating a book")
 public record BookRequestDto(
         @Schema(description = "Title of the book", example = "Stranger things")
         @NotBlank(message = "Title must not be blank")
         String title,
-        @Schema(description = "Author of the book", example = "Matt Duffer")
-        @NotBlank(message = "Author must not be blank")
-        Author author,
+        @Schema(description = "Author id of the book", example = "5")
+        @NotNull(message = "AuthorId must not be null")
+        Long authorId,
         @Schema(description = "ISBN number of the book ", example = "Ev443-FRed")
         @NotBlank(message = "ISBN must not be blank")
         String isbn,

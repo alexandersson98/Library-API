@@ -13,9 +13,6 @@ public record AuthorResponseDto(
         Long id,
 
         @Schema(description = "name of the author", example = "Jk Rowling")
-        String name,
-
-        @Schema(description = "List of the authors listed books", example = "Harry Potter 1, Harry Potter 2")
-        List<BookResponseDto>books
+        String name
 ) {
 }

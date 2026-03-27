@@ -13,7 +13,7 @@ public record BookResponseDto(
         String title,
 
         @Schema(description = "Author of the book", example = "J.K. Rowling")
-        Author author,
+        String authorName,
 
         @Schema(description = "ISBN number of the book", example = "9780747532743")
         String isbn,

@@ -19,14 +19,9 @@ public class AuthorMapper {
     }
 
     public AuthorResponseDto toResponseDto(Author author){
-        List<BookResponseDto> books = author.getBooks().stream()
-                .map(bookMapper::toResponseDto)
-                .toList();
-
         return new AuthorResponseDto(
                 author.getId(),
-                author.getName(),
-                books
+                author.getName()
         );
     }
 

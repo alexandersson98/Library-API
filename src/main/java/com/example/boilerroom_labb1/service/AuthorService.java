@@ -2,7 +2,9 @@ package com.example.boilerroom_labb1.service;
 
 import com.example.boilerroom_labb1.dto.AuthorRequestDto;
 import com.example.boilerroom_labb1.dto.AuthorResponseDto;
+import com.example.boilerroom_labb1.dto.BookResponseDto;
 import com.example.boilerroom_labb1.entity.Author;
+import com.example.boilerroom_labb1.exceptions.NotFoundWithIdException;
 import com.example.boilerroom_labb1.mapper.AuthorMapper;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +30,11 @@ public class AuthorService {
         Author author = mapper.toEntity(request);
         repository.save(author);
          return mapper.toResponseDto(author);
+    }
+
+    public AuthorResponseDto getAuthorById(Long id){
+        return repository.findById(id)
+                .map(mapper::toResponseDto)
+                .orElseThrow(() -> new NotFoundWithIdException("Author not found with id: ", + id));
     }
 }
