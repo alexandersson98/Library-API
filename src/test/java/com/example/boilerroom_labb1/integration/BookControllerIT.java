@@ -4,8 +4,10 @@ package com.example.boilerroom_labb1.integration;
 import com.example.boilerroom_labb1.TestData;
 import com.example.boilerroom_labb1.controller.BookController;
 
+import com.example.boilerroom_labb1.dto.AuthorRequestDto;
 import com.example.boilerroom_labb1.dto.BookRequestDto;
 import com.example.boilerroom_labb1.dto.BookResponseDto;
+import com.example.boilerroom_labb1.entity.Author;
 import com.example.boilerroom_labb1.entity.Book;
 import com.example.boilerroom_labb1.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,9 +35,12 @@ public class BookControllerIT {
 
     @Test
    void shouldReturn201AndSaveBookWhenCreatingValidBook(){
+            Author author = TestData.createAuthor("Matt Duffer");
+
+
             BookRequestDto request = new BookRequestDto(
                     "Stranger Things",
-                    TestData.createAuthor("Matt Duffer"),
+                    author.getId(),
                     "EV443-FRed",
                     2016
             );
@@ -47,7 +52,7 @@ public class BookControllerIT {
             assertThat(response.getBody()).isNotNull();
 
             assertThat(response.getBody().title()).isEqualTo("Stranger Things");
-            assertThat(response.getBody().author()).isEqualTo("Matt Duffer");
+            assertThat(response.getBody().authorName()).isEqualTo("Matt Duffer");
 
             assertThat(bookRepository.count()).isEqualTo(1);
 
@@ -78,7 +83,7 @@ public class BookControllerIT {
             assertThat(response.getBody()).isNotNull();
 
             assertThat(response.getBody().title()).isEqualTo("Flammande Osten");
-            assertThat(response.getBody().author()).isEqualTo("Ostsson Bengt");
+            assertThat(response.getBody().authorName()).isEqualTo("Ostsson Bengt");
         }
 }
 

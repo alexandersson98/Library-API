@@ -5,11 +5,15 @@ import com.example.boilerroom_labb1.dto.BookRequestDto;
 import com.example.boilerroom_labb1.dto.BookResponseDto;
 import com.example.boilerroom_labb1.dto.BookResponseDtoV2;
 import com.example.boilerroom_labb1.dto.BookWrapperDtoV2;
+import com.example.boilerroom_labb1.entity.Author;
 import com.example.boilerroom_labb1.entity.Book;
 import com.example.boilerroom_labb1.exceptions.NotFoundWithIdException;
+import com.example.boilerroom_labb1.exceptions.ResourceNotFoundException;
 import com.example.boilerroom_labb1.exceptions.ValidationException;
 import com.example.boilerroom_labb1.mapper.BookMapper;
+import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
+import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,17 +22,23 @@ import java.util.List;
 public class BookService {
     private final BookRepository repository;
     private final BookMapper mapper;
-
+    private final AuthorRepository authorRepository;
 
 
     public BookService(BookRepository repository,
-    BookMapper mapper){
+    BookMapper mapper, AuthorRepository authorRepository){
         this.repository = repository;
         this.mapper = mapper;
+        this.authorRepository = authorRepository;
+
     }
 
     public Book createEntity(BookRequestDto request){
+        Author author = authorRepository.findById(request.authorId())
+                .orElseThrow(() -> new ResourceNotFoundException("Author with id " + request.authorId() + "not found"));
+
         Book book = mapper.toEntity(request);
+        book.setAuthor(author);
         if (request.publishedYear() <= 1700) {
             throw new ValidationException("Published year must be greater than 1700");
         }
