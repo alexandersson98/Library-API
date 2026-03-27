@@ -3,6 +3,8 @@ package com.example.boilerroom_labb1.controller;
 
 import com.example.boilerroom_labb1.dto.AuthorRequestDto;
 import com.example.boilerroom_labb1.dto.AuthorResponseDto;
+import com.example.boilerroom_labb1.dto.BookResponseDto;
+import com.example.boilerroom_labb1.dto.BookResponseDtoV2;
 import com.example.boilerroom_labb1.openapi.BadRequestResponse;
 import com.example.boilerroom_labb1.service.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +13,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/author")
@@ -34,12 +38,15 @@ public class AuthorController {
                 .body(response);
     }
 
-
-
     @GetMapping("/{id}")
     public ResponseEntity<AuthorResponseDto>getAuthorById(@PathVariable Long id){
         AuthorResponseDto response = service.getAuthorById(id);
         return ResponseEntity.ok()
                 .body(response);
+    }
+
+    @GetMapping("/{authorId}/books")
+    public ResponseEntity<List<BookResponseDto>> getAllBooksByAuthorId(@PathVariable Long authorId) {
+        return ResponseEntity.ok(service.getBooksByAuthor(authorId));
     }
 }

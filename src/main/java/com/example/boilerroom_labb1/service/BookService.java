@@ -16,6 +16,7 @@ import com.example.boilerroom_labb1.repository.BookRepository;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,6 +43,7 @@ public class BookService {
         if (request.publishedYear() <= 1700) {
             throw new ValidationException("Published year must be greater than 1700");
         }
+
         return repository.save(book);
     }
 
