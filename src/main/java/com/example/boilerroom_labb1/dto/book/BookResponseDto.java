@@ -1,6 +1,5 @@
-package com.example.boilerroom_labb1.dto;
+package com.example.boilerroom_labb1.dto.book;
 
-import com.example.boilerroom_labb1.entity.Author;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Response object representing a book")

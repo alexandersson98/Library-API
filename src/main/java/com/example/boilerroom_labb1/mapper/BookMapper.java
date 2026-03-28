@@ -1,16 +1,17 @@
 package com.example.boilerroom_labb1.mapper;
 
 
-import com.example.boilerroom_labb1.dto.AuthorResponseDto;
-import com.example.boilerroom_labb1.dto.BookRequestDto;
-import com.example.boilerroom_labb1.dto.BookResponseDto;
-import com.example.boilerroom_labb1.dto.BookResponseDtoV2;
+import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
+import com.example.boilerroom_labb1.dto.book.BookRequestDto;
+import com.example.boilerroom_labb1.dto.book.BookResponseDto;
+import com.example.boilerroom_labb1.dto.book.BookResponseDtoV2;
 import com.example.boilerroom_labb1.entity.Book;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BookMapper {
-    public BookResponseDto toResponseDto(Book book){
+    public BookResponseDto toResponseDto
+            (Book book){
         return new BookResponseDto(
                 book.getId(),
                 book.getTitle(),

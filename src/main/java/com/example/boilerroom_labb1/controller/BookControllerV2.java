@@ -1,9 +1,9 @@
 package com.example.boilerroom_labb1.controller;
 
 
-import com.example.boilerroom_labb1.dto.BookRequestDto;
-import com.example.boilerroom_labb1.dto.BookResponseDtoV2;
-import com.example.boilerroom_labb1.dto.BookWrapperDtoV2;
+import com.example.boilerroom_labb1.dto.book.BookRequestDto;
+import com.example.boilerroom_labb1.dto.book.BookResponseDtoV2;
+import com.example.boilerroom_labb1.dto.book.BookWrapperDtoV2;
 import com.example.boilerroom_labb1.openapi.BadRequestResponse;
 import com.example.boilerroom_labb1.openapi.NotFoundResponse;
 import com.example.boilerroom_labb1.service.BookService;

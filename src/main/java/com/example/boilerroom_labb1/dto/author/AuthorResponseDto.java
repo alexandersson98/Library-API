@@ -1,10 +1,7 @@
-package com.example.boilerroom_labb1.dto;
+package com.example.boilerroom_labb1.dto.author;
 
 
-import com.example.boilerroom_labb1.entity.Book;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.List;
 
 @Schema(description = "Response object representing an author")
 public record AuthorResponseDto(
