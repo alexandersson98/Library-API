@@ -13,7 +13,7 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne
-    @JoinColumn(name = book_id, unique = true, nullable = false)
+    @JoinColumn(name = "book_id", unique = true, nullable = false)
     private Book book;
 
     private LocalDate loanDate;
