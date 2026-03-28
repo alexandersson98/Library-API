@@ -5,6 +5,8 @@ import com.example.boilerroom_labb1.dto.loan.LoanRequestDto;
 import com.example.boilerroom_labb1.dto.loan.LoanResponseDto;
 import com.example.boilerroom_labb1.entity.Book;
 import com.example.boilerroom_labb1.entity.Loan;
+import com.example.boilerroom_labb1.exceptions.NotFoundException;
+import com.example.boilerroom_labb1.exceptions.NotFoundWithIdException;
 import com.example.boilerroom_labb1.exceptions.ResourceNotFoundException;
 import com.example.boilerroom_labb1.mapper.LoanMapper;
 import com.example.boilerroom_labb1.repository.BookRepository;
@@ -33,7 +35,7 @@ public class LoanService {
         Book book = bookRepository.findById(request.bookId())
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
         if (loanRepository.existsByBookId(book.getId())){
-            throw new IllegalArgumentException("Book already loaned.");
+            throw new NotFoundException("Book already loaned.");
         }
         Loan loan = new Loan();
         loan.setBook(book);

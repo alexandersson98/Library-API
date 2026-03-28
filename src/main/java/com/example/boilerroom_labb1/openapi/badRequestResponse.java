@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @ApiResponse(
-        responseCode = "404",
+        responseCode = "400",
         description = "Resource not found",
         content = @Content(
                 mediaType = "application/json",
