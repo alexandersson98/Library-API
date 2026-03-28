@@ -9,5 +9,6 @@ public record AuthorRequestDto(
         @Schema(description = "Name of the author", example = "Jk Rowling")
         @NotBlank(message = "Name must not be blank")
         String name
+
 ) {
 }
