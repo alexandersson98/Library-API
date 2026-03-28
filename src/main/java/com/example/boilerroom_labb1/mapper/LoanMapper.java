@@ -12,6 +12,7 @@ public class LoanMapper {
         return new LoanResponseDto(
                 loan.getId(),
                 loan.getBook().getId(),
+                loan.getBook().getTitle(),
                 loan.getLoanDate(),
                 loan.getReturnDate()
         );
