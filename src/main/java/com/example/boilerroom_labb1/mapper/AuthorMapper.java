@@ -1,12 +1,9 @@
 package com.example.boilerroom_labb1.mapper;
 
-import com.example.boilerroom_labb1.dto.AuthorRequestDto;
-import com.example.boilerroom_labb1.dto.AuthorResponseDto;
-import com.example.boilerroom_labb1.dto.BookResponseDto;
+import com.example.boilerroom_labb1.dto.author.AuthorRequestDto;
+import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
 import com.example.boilerroom_labb1.entity.Author;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class AuthorMapper {

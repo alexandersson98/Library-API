@@ -2,11 +2,9 @@ package com.example.boilerroom_labb1.integration;
 
 
 import com.example.boilerroom_labb1.TestData;
-import com.example.boilerroom_labb1.controller.BookController;
 
-import com.example.boilerroom_labb1.dto.AuthorRequestDto;
-import com.example.boilerroom_labb1.dto.BookRequestDto;
-import com.example.boilerroom_labb1.dto.BookResponseDto;
+import com.example.boilerroom_labb1.dto.book.BookRequestDto;
+import com.example.boilerroom_labb1.dto.book.BookResponseDto;
 import com.example.boilerroom_labb1.entity.Author;
 import com.example.boilerroom_labb1.entity.Book;
 import com.example.boilerroom_labb1.repository.BookRepository;
@@ -15,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,7 +1,7 @@
-package com.example.boilerroom_labb1.dto;
+package com.example.boilerroom_labb1.dto.book;
 
 
-import com.example.boilerroom_labb1.entity.Author;
+import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Version 2 response object representing a book")
 public record BookResponseDtoV2(

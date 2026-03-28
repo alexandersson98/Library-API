@@ -1,10 +1,10 @@
 package com.example.boilerroom_labb1.service;
 
 
-import com.example.boilerroom_labb1.dto.BookRequestDto;
-import com.example.boilerroom_labb1.dto.BookResponseDto;
-import com.example.boilerroom_labb1.dto.BookResponseDtoV2;
-import com.example.boilerroom_labb1.dto.BookWrapperDtoV2;
+import com.example.boilerroom_labb1.dto.book.BookRequestDto;
+import com.example.boilerroom_labb1.dto.book.BookResponseDto;
+import com.example.boilerroom_labb1.dto.book.BookResponseDtoV2;
+import com.example.boilerroom_labb1.dto.book.BookWrapperDtoV2;
 import com.example.boilerroom_labb1.entity.Author;
 import com.example.boilerroom_labb1.entity.Book;
 import com.example.boilerroom_labb1.exceptions.NotFoundWithIdException;
@@ -13,10 +13,8 @@ import com.example.boilerroom_labb1.exceptions.ValidationException;
 import com.example.boilerroom_labb1.mapper.BookMapper;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
-import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

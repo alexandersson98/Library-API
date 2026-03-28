@@ -1,11 +1,8 @@
 package com.example.boilerroom_labb1.controller;
 
 
-import com.example.boilerroom_labb1.dto.BookRequestDto;
-import com.example.boilerroom_labb1.dto.BookResponseDto;
-import com.example.boilerroom_labb1.dto.BookResponseDtoV2;
-import com.example.boilerroom_labb1.dto.BookWrapperDtoV2;
-import com.example.boilerroom_labb1.entity.Book;
+import com.example.boilerroom_labb1.dto.book.BookRequestDto;
+import com.example.boilerroom_labb1.dto.book.BookResponseDto;
 import com.example.boilerroom_labb1.openapi.BadRequestResponse;
 import com.example.boilerroom_labb1.openapi.NotFoundResponse;
 import com.example.boilerroom_labb1.service.BookService;
@@ -17,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
