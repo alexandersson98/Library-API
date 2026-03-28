@@ -12,6 +12,7 @@ import com.example.boilerroom_labb1.repository.LoanRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class LoanService {
@@ -42,5 +43,12 @@ public class LoanService {
         Loan savedLoan = loanRepository.save(loan);
 
         return loanMapper.toResponseDto(savedLoan);
+    }
+
+    public  List<LoanResponseDto> getAllLoans(){
+           return loanRepository.findByReturnDateIsNull().stream()
+                .map(loanMapper::toResponseDto)
+                .toList();
+
     }
 }
