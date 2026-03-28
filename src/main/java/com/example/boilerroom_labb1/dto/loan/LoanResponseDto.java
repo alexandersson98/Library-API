@@ -1,4 +1,9 @@
 package com.example.boilerroom_labb1.dto.loan;
 
-public record LoanResponseDto() {
+import java.time.LocalDate;
+
+public record LoanResponseDto(Long id,
+                              Long bookId,
+                              LocalDate loanDate,
+                              LocalDate returnDate) {
 }
