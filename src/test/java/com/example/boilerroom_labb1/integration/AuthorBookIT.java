@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -116,9 +117,41 @@ public class AuthorBookIT {
 
 
         assertTrue(found);
-
-
     }
+
+    @Test
+
+            void shouldReturnBadRequestWhenTryingToLoanSameBookTwice(){
+    AuthorRequestDto authorRequest = new AuthorRequestDto("Johan Bengtsson");
+
+    ResponseEntity<AuthorResponseDto>authorResponse = restTemplate.postForEntity("/api/v1/author",
+            authorRequest,
+            AuthorResponseDto.class);
+
+    Long authorId = authorResponse.getBody().id();
+
+    BookRequestDto bookRequest = new BookRequestDto("The hunger games", authorId, "eeee", 2005);
+    ResponseEntity<BookResponseDto> bookResponse = restTemplate.postForEntity("/api/v1/books",
+            bookRequest,
+            BookResponseDto.class);
+
+    Long bookId = bookResponse.getBody().id();
+
+    LoanRequestDto loanRequest = new LoanRequestDto(bookId);
+    ResponseEntity<LoanResponseDto> loanResponse = restTemplate.postForEntity("/api/v1/loans",
+            loanRequest,
+            LoanResponseDto.class);
+
+        assertEquals(HttpStatus.CREATED, loanResponse.getStatusCode());
+
+        ResponseEntity<LoanResponseDto> loanResponse2 = restTemplate.postForEntity("/api/v1/loans",
+                loanRequest,
+                LoanResponseDto.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, loanResponse2.getStatusCode());
+
+}
+
 
 
 }
