@@ -82,6 +82,7 @@ public class BookControllerIT {
             assertThat(response.getBody().title()).isEqualTo("Flammande Osten");
             assertThat(response.getBody().authorName()).isEqualTo("Ostsson Bengt");
         }
+
 }
 
 
