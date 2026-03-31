@@ -3,15 +3,23 @@ package com.example.boilerroom_labb1.integration;
 
 import com.example.boilerroom_labb1.dto.author.AuthorRequestDto;
 import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
+import com.example.boilerroom_labb1.dto.book.BookRequestDto;
+import com.example.boilerroom_labb1.dto.book.BookResponseDto;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
+import com.example.boilerroom_labb1.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -24,6 +32,8 @@ public class AuthorControllerIT {
     private TestRestTemplate restTemplate;
     @Autowired
     private AuthorRepository authorRepository;
+    @Autowired
+    BookRepository bookRepository;
 
 
     @BeforeEach
@@ -64,8 +74,35 @@ public class AuthorControllerIT {
         assertNotNull(fetchedBody);
         assertEquals("Herbert Bengtsson",fetchedBody.name());
         assertEquals(authorResponse.getBody().id(), fetchedBody.id());
+    }
+
+
+    @Test
+    void shouldReturnBooksByAuthorsId(){
+        AuthorRequestDto authorRequest = new AuthorRequestDto("Herbert Bengtsson");
+        ResponseEntity<AuthorResponseDto>authorResponse = restTemplate.postForEntity("/api/v1/author",
+                authorRequest,
+                AuthorResponseDto.class);
+
+        Long authorId = authorResponse.getBody().id();
+
+        BookRequestDto bookRequest = new BookRequestDto("Harry Potter", authorResponse.getBody().id(), "eeee", 2007);
+        ResponseEntity<BookResponseDto> bookResponse = restTemplate.postForEntity("/api/v1/books",
+                bookRequest,
+                BookResponseDto.class);
+
+
+        ResponseEntity<BookResponseDto[]> booksByAuthor = restTemplate.getForEntity(
+                "/api/v1/author/{authorId}/books",
+                BookResponseDto[].class,
+                authorId
+        );
+        assertEquals(HttpStatus.CREATED, authorResponse.getStatusCode());
+        assertEquals(HttpStatus.OK, booksByAuthor.getStatusCode());
+        assertNotNull(booksByAuthor.getBody());
+        assertEquals(1, booksByAuthor.getBody().length);
+        assertEquals("Harry Potter", booksByAuthor.getBody()[0].title());
 
 
     }
-
 }
