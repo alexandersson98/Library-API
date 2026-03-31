@@ -67,4 +67,46 @@ public class LoanControllerIT {
         assertNotNull(loanResponse.getBody());
         assertNotNull(loanResponse.getBody().id());
     }
+
+    @Test
+    void shouldReturnAllLoans() {
+        AuthorRequestDto authorRequest = new AuthorRequestDto("Joel Göransson");
+
+        ResponseEntity<AuthorResponseDto> authorResponse = restTemplate.postForEntity("/api/v1/author",
+                authorRequest,
+                AuthorResponseDto.class);
+
+        Long authorId = authorResponse.getBody().id();
+
+        BookRequestDto bookRequest = new BookRequestDto("Peaky Blinders", authorId, "eeee", 2006);
+        ResponseEntity<BookResponseDto> bookResponse = restTemplate.postForEntity("/api/v1/books",
+                bookRequest,
+                BookResponseDto.class);
+
+        Long bookId = bookResponse.getBody().id();
+
+        LoanRequestDto loanRequest = new LoanRequestDto(bookId);
+        ResponseEntity<LoanResponseDto> loanResponse = restTemplate.postForEntity("/api/v1/loans",
+                loanRequest,
+                LoanResponseDto.class);
+
+
+
+        ResponseEntity<LoanResponseDto[]>activeLoans = restTemplate.getForEntity("/api/v1/loans",
+                LoanResponseDto[].class);
+
+        LoanResponseDto[] loanResponseDto = activeLoans.getBody();
+        assertNotNull(loanResponseDto);
+        assertTrue(loanResponseDto.length > 0);
+
+        assertEquals(HttpStatus.CREATED, loanResponse.getStatusCode());
+        assertEquals(HttpStatus.OK, activeLoans.getStatusCode());
+
+        LoanResponseDto[] loanResponseDtos = activeLoans.getBody();
+        assertNotNull(loanResponseDtos);
+        assertTrue(loanResponseDtos.length > 0);
+
+        LoanResponseDto firstLoan = loanResponseDtos[0];
+        assertNotNull(firstLoan);
+    }
 }
