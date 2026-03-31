@@ -39,7 +39,9 @@ public class AuthorControllerIT {
     @BeforeEach
     void setUp() {
         authorRepository.deleteAll();
+        bookRepository.deleteAll();
     }
+
 
 
     @Test
@@ -91,7 +93,6 @@ public class AuthorControllerIT {
                 bookRequest,
                 BookResponseDto.class);
 
-
         ResponseEntity<BookResponseDto[]> booksByAuthor = restTemplate.getForEntity(
                 "/api/v1/author/{authorId}/books",
                 BookResponseDto[].class,
@@ -102,7 +103,10 @@ public class AuthorControllerIT {
         assertNotNull(booksByAuthor.getBody());
         assertEquals(1, booksByAuthor.getBody().length);
         assertEquals("Harry Potter", booksByAuthor.getBody()[0].title());
+    }
 
+    @Test
+    void shouldCreateLoan(){
 
     }
 }
