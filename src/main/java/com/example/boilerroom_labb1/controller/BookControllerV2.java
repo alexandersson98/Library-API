@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("api/v2/books")
+@RequestMapping("/api/v2/books")
 public class BookControllerV2 {
     private final BookService service;
 
@@ -49,7 +49,7 @@ public class BookControllerV2 {
     })
     @NotFoundResponse
     @GetMapping("/{id}")
-    public ResponseEntity<BookWrapperDtoV2>getBookById(Long id){
+    public ResponseEntity<BookWrapperDtoV2>getBookById(@PathVariable Long id){
         BookWrapperDtoV2 response = service.getBookByIdV2(id);
         return ResponseEntity
                 .ok()
