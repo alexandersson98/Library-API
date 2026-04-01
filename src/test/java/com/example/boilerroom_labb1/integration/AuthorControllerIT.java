@@ -102,4 +102,15 @@ public class AuthorControllerIT {
         assertEquals(1, booksByAuthor.getBody().length);
         assertEquals("Harry Potter", booksByAuthor.getBody()[0].title());
     }
+
+    @Test
+    void shouldReturn404WhenNotFound(){
+        Long id = 1L;
+        ResponseEntity<String>response = restTemplate.getForEntity("/api/v1/author/{id}",
+              String.class,
+                id);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
 }
