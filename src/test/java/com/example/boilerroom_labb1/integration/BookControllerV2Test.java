@@ -34,9 +34,7 @@ public class BookControllerV2Test {
     }
 
     @Test
-    void shouldCreateBookAndReturnV2Response()()
-
-    {
+    void shouldCreateBookAndReturnV2Response() {
         AuthorRequestDto authorRequest = new AuthorRequestDto("Matt Duffer");
         ResponseEntity<AuthorResponseDto> authorResponse =
                 restTemplate.postForEntity("/api/v1/author",
