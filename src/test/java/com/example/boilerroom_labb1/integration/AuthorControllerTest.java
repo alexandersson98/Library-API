@@ -16,14 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class AuthorControllerIT {
+public class AuthorControllerTest {
 
 
     @Autowired
@@ -112,5 +110,4 @@ public class AuthorControllerIT {
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
-
 }

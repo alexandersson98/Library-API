@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class AuthorBookIT {
+public class AuthorBookTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -36,9 +36,9 @@ public class AuthorBookIT {
 
     @BeforeEach
     void setUp() {
-        loanRepository.deleteAll();
-        bookRepository.deleteAll();
         authorRepository.deleteAll();
+        bookRepository.deleteAll();
+        loanRepository.deleteAll();
     }
     @Test
     void shouldCreateAuthorAndBook_andReturnBookViaAuthorEndpoint(){
@@ -148,8 +148,5 @@ public class AuthorBookIT {
 
         assertEquals(HttpStatus.BAD_REQUEST, loanResponse2.getStatusCode());
 
-}
-
-
-
+    }
 }

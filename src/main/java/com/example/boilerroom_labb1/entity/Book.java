@@ -60,4 +60,5 @@ public class Book {
     public void setPublishedYear(int publishedYear) {
         this.publishedYear = publishedYear;
     }
-}
+    }
+
