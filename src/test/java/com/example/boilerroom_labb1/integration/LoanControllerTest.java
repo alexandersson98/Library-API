@@ -150,5 +150,4 @@ public class LoanControllerTest {
         assertEquals(HttpStatus.CREATED, loanResponse.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST, loanResponse2.getStatusCode());
     }
-
 }
