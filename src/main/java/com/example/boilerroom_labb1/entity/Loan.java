@@ -39,7 +39,6 @@ public class Loan {
         return returnDate;
     }
 
-
     public void setBook(Book book) {
         this.book = book;
     }

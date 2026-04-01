@@ -42,10 +42,10 @@ public class LoanControllerIT {
     }
 
     @Test
-    void shouldCreateLoan(){
+    void shouldCreateLoan() {
         AuthorRequestDto authorRequest = new AuthorRequestDto("Joel Göransson");
 
-        ResponseEntity<AuthorResponseDto>authorResponse = restTemplate.postForEntity("/api/v1/author",
+        ResponseEntity<AuthorResponseDto> authorResponse = restTemplate.postForEntity("/api/v1/author",
                 authorRequest,
                 AuthorResponseDto.class);
 
@@ -59,7 +59,7 @@ public class LoanControllerIT {
         Long bookId = bookResponse.getBody().id();
 
         LoanRequestDto loanRequest = new LoanRequestDto(bookId);
-        ResponseEntity<LoanResponseDto>loanResponse = restTemplate.postForEntity("/api/v1/loans",
+        ResponseEntity<LoanResponseDto> loanResponse = restTemplate.postForEntity("/api/v1/loans",
                 loanRequest,
                 LoanResponseDto.class);
 
@@ -91,8 +91,7 @@ public class LoanControllerIT {
                 LoanResponseDto.class);
 
 
-
-        ResponseEntity<LoanResponseDto[]>activeLoans = restTemplate.getForEntity("/api/v1/loans",
+        ResponseEntity<LoanResponseDto[]> activeLoans = restTemplate.getForEntity("/api/v1/loans",
                 LoanResponseDto[].class);
 
         LoanResponseDto[] loanResponseDto = activeLoans.getBody();
@@ -108,5 +107,16 @@ public class LoanControllerIT {
 
         LoanResponseDto firstLoan = loanResponseDtos[0];
         assertNotNull(firstLoan);
+    }
+
+    @Test
+    void shouldReturn404WhenCreateLoanAndBookNotFound() {
+        Long bookId = 999L;
+        LoanRequestDto loanRequest = new LoanRequestDto(bookId);
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/v1/loans",
+                loanRequest,
+                String.class);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 }
