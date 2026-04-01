@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class LoanControllerIT {
+public class LoanControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -36,9 +36,9 @@ public class LoanControllerIT {
 
     @BeforeEach
     void setUp() {
-        authorRepository.deleteAll();
-        bookRepository.deleteAll();
         loanRepository.deleteAll();
+        bookRepository.deleteAll();
+        authorRepository.deleteAll();
     }
 
     @Test
@@ -149,7 +149,6 @@ public class LoanControllerIT {
 
         assertEquals(HttpStatus.CREATED, loanResponse.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST, loanResponse2.getStatusCode());
-
     }
 
 }
