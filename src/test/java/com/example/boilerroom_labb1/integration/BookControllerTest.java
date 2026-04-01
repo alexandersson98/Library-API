@@ -7,6 +7,8 @@ import com.example.boilerroom_labb1.dto.book.BookRequestDto;
 import com.example.boilerroom_labb1.dto.book.BookResponseDto;
 import com.example.boilerroom_labb1.entity.Author;
 import com.example.boilerroom_labb1.entity.Book;
+import com.example.boilerroom_labb1.exceptions.ApiErrorResponse;
+import com.example.boilerroom_labb1.exceptions.ValidationException;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +39,7 @@ public class BookControllerTest {
 
 
     @Test
-   void shouldReturn201AndSaveBookWhenCreatingValidBook(){
+    void shouldReturn201AndSaveBookWhenCreatingValidBook(){
         AuthorRequestDto authorRequest = new AuthorRequestDto("Matt Duffer");
         ResponseEntity<AuthorResponseDto>authorResponse =
                 restTemplate.postForEntity("/api/v1/author",
@@ -65,42 +67,69 @@ public class BookControllerTest {
             assertThat(response.getBody().publishedYear()).isEqualTo(2016);
         }
 
-        @Test
-        void shouldReturn200AndBookWhenBookExists() {
-            AuthorRequestDto authorRequest = new AuthorRequestDto("Ostsson Bengt");
-            ResponseEntity<AuthorResponseDto>authorResponse =
-                    restTemplate.postForEntity("/api/v1/author",
-                            authorRequest,
-                            AuthorResponseDto.class);
+    @Test
+    void shouldReturn200AndBookWhenBookExists() {
+        AuthorRequestDto authorRequest = new AuthorRequestDto("Ostsson Bengt");
+        ResponseEntity<AuthorResponseDto>authorResponse =
+                restTemplate.postForEntity("/api/v1/author",
+                        authorRequest,
+                        AuthorResponseDto.class);
 
-            Long authorId = authorResponse.getBody().id();
+        Long authorId = authorResponse.getBody().id();
 
 
 
-            BookRequestDto request = new BookRequestDto(
-                    "Flammande Osten",
-                    authorId,
-                    "EV443-FRed",
-                    2016
-            );
+        BookRequestDto request = new BookRequestDto(
+                "Flammande Osten",
+                authorId,
+                "EV443-FRed",
+                2016
+        );
 
-            ResponseEntity<BookResponseDto> response = restTemplate.postForEntity("/api/v1/books",
-                    request,
-                    BookResponseDto.class);
+        ResponseEntity<BookResponseDto> response = restTemplate.postForEntity("/api/v1/books",
+                request,
+                BookResponseDto.class);
 
-            Long bookId = response.getBody().id();
+        Long bookId = response.getBody().id();
 
-            ResponseEntity<BookResponseDto> getBookWithId = restTemplate.getForEntity("/api/v1/books/{id}",
-                    BookResponseDto.class,
-                    bookId
-                    );
+        ResponseEntity<BookResponseDto> getBookWithId = restTemplate.getForEntity("/api/v1/books/{id}",
+                BookResponseDto.class,
+                bookId
+                );
 
-            assertThat(getBookWithId.getStatusCode()).isEqualTo(HttpStatus.OK);
-            assertThat(getBookWithId).isNotNull();
+        assertThat(getBookWithId.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(getBookWithId).isNotNull();
 
-            assertThat(getBookWithId.getBody().title()).isEqualTo("Flammande Osten");
-            assertThat(getBookWithId.getBody().authorName()).isEqualTo("Ostsson Bengt");
-        }
+        assertThat(getBookWithId.getBody().title()).isEqualTo("Flammande Osten");
+        assertThat(getBookWithId.getBody().authorName()).isEqualTo("Ostsson Bengt");
+    }
+
+    @Test
+    void shouldThrowValidationException(){
+        AuthorRequestDto authorRequest = new AuthorRequestDto("Matt Duffer");
+        ResponseEntity<AuthorResponseDto>authorResponse =
+                restTemplate.postForEntity("/api/v1/author",
+                        authorRequest,
+                        AuthorResponseDto.class);
+
+        Long authorId = authorResponse.getBody().id();
+
+        BookRequestDto request = new BookRequestDto(
+                "Stranger Things",
+                authorId,
+                "EV443-FRed",
+                912
+        );
+
+        ResponseEntity<ApiErrorResponse> response = restTemplate.postForEntity("/api/v1/books",
+                request,
+                ApiErrorResponse.class);
+
+       assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+       assertThat(response.getBody()).isNotNull();
+       assertThat(response.getBody().message().contains("Published year must be greater than 1700"));
+
+    }
 }
 
 
