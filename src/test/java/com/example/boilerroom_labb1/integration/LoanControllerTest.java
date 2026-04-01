@@ -36,9 +36,9 @@ public class LoanControllerTest {
 
     @BeforeEach
     void setUp() {
-        authorRepository.deleteAll();
-        bookRepository.deleteAll();
         loanRepository.deleteAll();
+        bookRepository.deleteAll();
+        authorRepository.deleteAll();
     }
 
     @Test
@@ -149,7 +149,6 @@ public class LoanControllerTest {
 
         assertEquals(HttpStatus.CREATED, loanResponse.getStatusCode());
         assertEquals(HttpStatus.BAD_REQUEST, loanResponse2.getStatusCode());
-
     }
 
 }

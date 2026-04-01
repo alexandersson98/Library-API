@@ -7,6 +7,7 @@ import com.example.boilerroom_labb1.dto.book.BookRequestDto;
 import com.example.boilerroom_labb1.dto.book.BookResponseDto;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
+import com.example.boilerroom_labb1.repository.LoanRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,15 @@ public class AuthorControllerTest {
     private AuthorRepository authorRepository;
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    LoanRepository loanRepository;
 
 
     @BeforeEach
     void setUp() {
-        authorRepository.deleteAll();
+        loanRepository.deleteAll();
         bookRepository.deleteAll();
+        authorRepository.deleteAll();
     }
 
 

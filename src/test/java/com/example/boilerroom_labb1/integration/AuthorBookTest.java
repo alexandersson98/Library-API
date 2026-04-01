@@ -36,9 +36,9 @@ public class AuthorBookTest {
 
     @BeforeEach
     void setUp() {
-        authorRepository.deleteAll();
-        bookRepository.deleteAll();
         loanRepository.deleteAll();
+        bookRepository.deleteAll();
+        authorRepository.deleteAll();
     }
     @Test
     void shouldCreateAuthorAndBook_andReturnBookViaAuthorEndpoint(){

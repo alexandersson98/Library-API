@@ -31,10 +31,8 @@ public class BookControllerTest {
 
 
 @BeforeEach void setUp(){
-    authorRepository.deleteAll();
     bookRepository.deleteAll();
-
-
+    authorRepository.deleteAll();
 }
 
 
