@@ -18,6 +18,10 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.List;
+import java.util.concurrent.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -121,7 +125,7 @@ public class LoanControllerTest {
     }
 
     @Test
-    void shouldReturn400WhenCreatingLoanTwiceWithSameBookId(){
+    void shouldReturnBadRequestWhenTryingToLoanSameBookTwice(){
         AuthorRequestDto authorRequest = new AuthorRequestDto("Joel Göransson");
 
         ResponseEntity<AuthorResponseDto> authorResponse = restTemplate.postForEntity("/api/v1/author",
@@ -142,12 +146,75 @@ public class LoanControllerTest {
                 loanRequest,
                 LoanResponseDto.class);
 
-        LoanRequestDto loanRequest2 = new LoanRequestDto(bookId);
+
         ResponseEntity<LoanResponseDto> loanResponse2 = restTemplate.postForEntity("/api/v1/loans",
-                loanRequest2,
+                loanRequest,
                 LoanResponseDto.class);
 
         assertEquals(HttpStatus.CREATED, loanResponse.getStatusCode());
-        assertEquals(HttpStatus.BAD_REQUEST, loanResponse2.getStatusCode());
+        assertEquals(HttpStatus.CONFLICT, loanResponse2.getStatusCode());
     }
+
+    @Test
+    void shouldAllowOnlyOneLoanWhenConcurrentRequests()throws Exception{
+        AuthorRequestDto authorRequest = new AuthorRequestDto("Joel Göransson");
+
+        ResponseEntity<AuthorResponseDto> authorResponse = restTemplate.postForEntity("/api/v1/author",
+                authorRequest,
+                AuthorResponseDto.class);
+
+        Long authorId = authorResponse.getBody().id();
+
+        BookRequestDto bookRequest = new BookRequestDto("Peaky Blinders", authorId, "eeee", 2006);
+        ResponseEntity<BookResponseDto> bookResponse = restTemplate.postForEntity("/api/v1/books",
+                bookRequest,
+                BookResponseDto.class);
+
+        Long bookId = bookResponse.getBody().id();
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        CountDownLatch startLatch = new CountDownLatch(1);
+        CountDownLatch doneLatch = new CountDownLatch(2);
+
+        Callable<ResponseEntity<LoanResponseDto>> task = () -> {
+            try {
+                startLatch.await();
+
+            LoanRequestDto loanRequest = new LoanRequestDto(bookId);
+            return restTemplate.postForEntity("/api/v1/loans",
+                    loanRequest,
+                    LoanResponseDto.class
+            );
+        }finally {
+                doneLatch.countDown();
+            }
+        };
+
+            Future<ResponseEntity<LoanResponseDto>> future1 = executor.submit(task);
+            Future<ResponseEntity<LoanResponseDto>> future2 = executor.submit(task);
+
+        startLatch.countDown();
+        doneLatch.await();
+
+            int successCount = 0;
+            int failureCount = 0;
+
+            for (Future<ResponseEntity<LoanResponseDto>> future : List.of(future1, future2)) {
+                try {
+                    ResponseEntity<LoanResponseDto> response = future.get();
+                    if (response.getStatusCode().is2xxSuccessful()) {
+                        successCount++;
+                    }
+                    else {
+                        failureCount++;}
+                } catch (Exception e) {
+                    failureCount++;
+                }
+            }
+
+            executor.shutdown();
+
+            assertEquals(1, successCount);
+            assertEquals(1, failureCount);
+        }
 }
