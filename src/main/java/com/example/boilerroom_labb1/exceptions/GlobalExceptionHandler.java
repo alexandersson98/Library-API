@@ -81,7 +81,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ApiErrorResponse>handleNotFound(
+    public ResponseEntity<ApiErrorResponse>handleBookAlreadyLoaned(
             NotFoundException ex,
             HttpServletRequest request
     ){
@@ -94,4 +94,18 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+
+    @ExceptionHandler(BookAlreadyLoanedException.class)
+    public ResponseEntity<ApiErrorResponse>handleBookAlreadyLoaned(
+            BookAlreadyLoanedException ex,
+            HttpServletRequest request
+    ){
+        ApiErrorResponse error = new ApiErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);}
 }
