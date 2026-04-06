@@ -5,10 +5,7 @@ import com.example.boilerroom_labb1.dto.author.AuthorRequestDto;
 import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
 import com.example.boilerroom_labb1.dto.book.BookRequestDto;
 import com.example.boilerroom_labb1.dto.book.BookResponseDto;
-import com.example.boilerroom_labb1.entity.Author;
-import com.example.boilerroom_labb1.entity.Book;
 import com.example.boilerroom_labb1.exceptions.ApiErrorResponse;
-import com.example.boilerroom_labb1.exceptions.ValidationException;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.result.StatusResultMatchersExtensionsKt.isEqualTo;
 
 
 

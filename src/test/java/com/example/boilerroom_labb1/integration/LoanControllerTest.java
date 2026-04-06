@@ -21,7 +21,9 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -192,29 +194,39 @@ public class LoanControllerTest {
 
             Future<ResponseEntity<LoanResponseDto>> future1 = executor.submit(task);
             Future<ResponseEntity<LoanResponseDto>> future2 = executor.submit(task);
-
         startLatch.countDown();
         doneLatch.await();
+        executor.shutdown();
 
-            int successCount = 0;
-            int failureCount = 0;
 
-            for (Future<ResponseEntity<LoanResponseDto>> future : List.of(future1, future2)) {
-                try {
-                    ResponseEntity<LoanResponseDto> response = future.get();
-                    if (response.getStatusCode().is2xxSuccessful()) {
-                        successCount++;
-                    }
-                    else {
-                        failureCount++;}
-                } catch (Exception e) {
-                    failureCount++;
-                }
-            }
+       List<ResponseEntity<LoanResponseDto>>responses = Stream.of(future1, future2)
+                       .map(f -> {
+                           try { return f.get(); }
+                           catch (Exception e) { throw new RuntimeException(e); }
+                               })
+                               .toList();
 
-            executor.shutdown();
+       assertThat(loanRepository.count()).isEqualTo(1);
 
-            assertEquals(1, successCount);
-            assertEquals(1, failureCount);
+       assertThat(responses.stream()
+               .filter(f -> f.getStatusCode() == HttpStatus.CREATED)
+               .count()).isEqualTo(1);
+
+       assertThat(responses.stream()
+               .filter(f -> f.getStatusCode() == HttpStatus.CONFLICT)
+               .count()).isEqualTo(1);
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
 }
