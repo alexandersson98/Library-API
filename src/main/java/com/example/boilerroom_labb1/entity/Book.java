@@ -14,6 +14,8 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
+    @Version
+    private Long version;
 
 
     public Book (){}
@@ -60,5 +62,9 @@ public class Book {
     public void setPublishedYear(int publishedYear) {
         this.publishedYear = publishedYear;
     }
+
+    public Long getVersion() {
+        return version;
     }
+}
 

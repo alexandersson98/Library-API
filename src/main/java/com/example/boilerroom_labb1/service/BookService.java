@@ -1,6 +1,6 @@
 package com.example.boilerroom_labb1.service;
 
-
+import com.example.boilerroom_labb1.dto.author.EditBookRequestDto;
 import com.example.boilerroom_labb1.dto.book.BookRequestDto;
 import com.example.boilerroom_labb1.dto.book.BookResponseDto;
 import com.example.boilerroom_labb1.dto.book.BookResponseDtoV2;
@@ -41,7 +41,6 @@ public class BookService {
         if (request.publishedYear() <= 1700) {
             throw new ValidationException("Published year must be greater than 1700");
         }
-
         return repository.save(book);
     }
 
@@ -79,5 +78,25 @@ public class BookService {
         return all.stream()
                 .map(mapper::toResponseDto)
                 .toList();
+    }
+
+
+    public BookResponseDto editBook(Long id, EditBookRequestDto editBookRequest){
+        Book book = repository.findById(id).orElseThrow(() -> new NotFoundWithIdException("Book not found with id: ", + id));
+            if(editBookRequest.title() != null){
+                book.setTitle(editBookRequest.title());
+            }
+            if (editBookRequest.authorId() != null ){
+                book.setAuthor(authorRepository.findById(editBookRequest.authorId()).orElseThrow(()->new NotFoundWithIdException("Author not found with id: ", + editBookRequest.authorId())));
+            }
+            if (editBookRequest.isbn() != null) {
+                book.setIsbn(editBookRequest.isbn());
+            }
+            if (editBookRequest.publishedYear() != null) {
+                book.setPublishedYear(editBookRequest.publishedYear());
+            }
+            repository.save(book);
+            return mapper.toResponseDto(book);
+
     }
 }
