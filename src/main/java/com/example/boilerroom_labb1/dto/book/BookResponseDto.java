@@ -18,6 +18,9 @@ public record BookResponseDto(
         String isbn,
 
         @Schema(description = "Year the book was published", example = "1997")
-        int publishedYear
+        int publishedYear,
+
+        @Schema(description = "Version number for optimistic locking", example = "2")
+        Long version
 
 ) {}
