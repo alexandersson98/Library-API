@@ -36,7 +36,7 @@ public class LoanService {
 
     @Transactional
     public LoanResponseDto createLoan(LoanRequestDto request){
-        Book book = bookRepository.findById(request.bookId())
+        Book book = bookRepository.findByIdWithLock(request.bookId())
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
         if (loanRepository.existsByBookId(book.getId())){
             throw new BookAlreadyLoanedException("Book already loaned.");
