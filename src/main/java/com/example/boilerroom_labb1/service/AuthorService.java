@@ -10,6 +10,8 @@ import com.example.boilerroom_labb1.mapper.AuthorMapper;
 import com.example.boilerroom_labb1.mapper.BookMapper;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,17 +36,21 @@ public class AuthorService {
     }
 
 
+    @CacheEvict(value = "authors", allEntries = true)
     public AuthorResponseDto createEntity(AuthorRequestDto request){
         Author author = mapper.toEntity(request);
         repository.save(author);
          return mapper.toResponseDto(author);
     }
 
+    @Cacheable("authors")
     public AuthorResponseDto getAuthorById(Long id){
         return repository.findById(id)
                 .map(mapper::toResponseDto)
                 .orElseThrow(() -> new NotFoundWithIdException("Author not found with id: ", + id));
     }
+
+    @Cacheable("authors")
     public List<BookResponseDto> getBooksByAuthor(Long authorId) {
 
         if (!repository.existsById(authorId)) {

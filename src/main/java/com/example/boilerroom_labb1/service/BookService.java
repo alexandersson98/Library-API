@@ -13,6 +13,8 @@ import com.example.boilerroom_labb1.exceptions.ValidationException;
 import com.example.boilerroom_labb1.mapper.BookMapper;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +34,7 @@ public class BookService {
 
     }
 
+    @CacheEvict(value = "book", allEntries = true)
     public Book createEntity(BookRequestDto request){
         Author author = authorRepository.findById(request.authorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Author with id " + request.authorId() + "not found"));
@@ -53,19 +56,21 @@ public class BookService {
         return mapper.toResponseDtoV2(saved);
     }
 
+    @Cacheable("book")
     public BookResponseDto getBookById(Long id){
         return repository.findById(id)
                 .map(mapper::toResponseDto)
                 .orElseThrow(() -> new NotFoundWithIdException("Book not found with id: ", + id));
     }
 
+    @Cacheable("book")
     public BookWrapperDtoV2 getBookByIdV2(Long id) {
         BookResponseDtoV2 dto  = repository.findById(id)
                 .map(mapper::toResponseDtoV2)
                 .orElseThrow(() -> new NotFoundWithIdException("Book not found with id: ", + id));
         return new BookWrapperDtoV2(List.of(dto), "V2");
     }
-
+    @Cacheable("book")
     public BookWrapperDtoV2 getAllV2() {
         List<BookResponseDtoV2> books = repository.findAll()
                 .stream()
@@ -73,6 +78,7 @@ public class BookService {
                 .toList();
         return new BookWrapperDtoV2(books, "V2");
     }
+    @Cacheable("book")
     public List<BookResponseDto>getAll(){
         List<Book>all = repository.findAll();
         return all.stream()
@@ -80,7 +86,7 @@ public class BookService {
                 .toList();
     }
 
-
+ @CacheEvict(value = "book", key = "#id")
     public BookResponseDto editBook(Long id, EditBookRequestDto editBookRequest){
         Book book = repository.findById(id).orElseThrow(() -> new NotFoundWithIdException("Book not found with id: ", + id));
             if(editBookRequest.title() != null){
