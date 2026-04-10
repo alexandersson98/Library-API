@@ -95,8 +95,8 @@ public class BookService {
             if (editBookRequest.publishedYear() != null) {
                 book.setPublishedYear(editBookRequest.publishedYear());
             }
-            repository.save(book);
-            return mapper.toResponseDto(book);
+
+            return mapper.toResponseDto(repository.save(book));
 
     }
 }
