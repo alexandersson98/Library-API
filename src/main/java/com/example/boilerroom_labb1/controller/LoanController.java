@@ -5,7 +5,6 @@ import com.example.boilerroom_labb1.dto.loan.LoanRequestDto;
 import com.example.boilerroom_labb1.dto.loan.LoanResponseDto;
 import com.example.boilerroom_labb1.openapi.BadRequestResponse;
 import com.example.boilerroom_labb1.openapi.ConflictResponse;
-import com.example.boilerroom_labb1.openapi.NotFoundResponse;
 import com.example.boilerroom_labb1.service.LoanService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

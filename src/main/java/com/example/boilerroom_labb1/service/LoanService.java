@@ -6,12 +6,13 @@ import com.example.boilerroom_labb1.dto.loan.LoanResponseDto;
 import com.example.boilerroom_labb1.entity.Book;
 import com.example.boilerroom_labb1.entity.Loan;
 import com.example.boilerroom_labb1.exceptions.BookAlreadyLoanedException;
-import com.example.boilerroom_labb1.exceptions.NotFoundException;
 import com.example.boilerroom_labb1.exceptions.ResourceNotFoundException;
 import com.example.boilerroom_labb1.mapper.LoanMapper;
 import com.example.boilerroom_labb1.repository.BookRepository;
 import com.example.boilerroom_labb1.repository.LoanRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +34,12 @@ public class LoanService {
         this.loanMapper = loanMapper;
     }
 
-
+    @CacheEvict(value = "loan", allEntries = true)
     @Transactional
     public LoanResponseDto createLoan(LoanRequestDto request){
         Book book = bookRepository.findByIdWithLock(request.bookId())
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
-        if (loanRepository.existsByBookId(book.getId())){
+        if (loanRepository.existsByBookIdAndReturnDateIsNull(book.getId())){
             throw new BookAlreadyLoanedException("Book already loaned.");
         }
         try {
@@ -55,10 +56,10 @@ public class LoanService {
         throw new BookAlreadyLoanedException("Book already loaned");}
     }
 
+    @Cacheable("loan")
     public  List<LoanResponseDto> getAllLoans(){
            return loanRepository.findByReturnDateIsNull().stream()
                 .map(loanMapper::toResponseDto)
                 .toList();
-
     }
 }
