@@ -5,6 +5,7 @@ import com.example.boilerroom_labb1.dto.author.AuthorRequestDto;
 import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
 import com.example.boilerroom_labb1.dto.book.BookResponseDto;
 import com.example.boilerroom_labb1.openapi.BadRequestResponse;
+import com.example.boilerroom_labb1.openapi.NotFoundResponse;
 import com.example.boilerroom_labb1.service.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,13 +38,20 @@ public class AuthorController {
                 .body(response);
     }
 
+    @Operation(summary = "Get author by id",
+    description = "Returns an author with entered id")
+    @ApiResponse(responseCode = "200", description = "Found")
+    @NotFoundResponse
     @GetMapping("/{id}")
     public ResponseEntity<AuthorResponseDto>getAuthorById(@PathVariable Long id){
         AuthorResponseDto response = service.getAuthorById(id);
         return ResponseEntity.ok()
                 .body(response);
     }
-
+    @Operation(summary = "Get books by author id",
+    description = "Returns a list with all books by an author")
+    @ApiResponse(responseCode = "200", description = "success")
+    @NotFoundResponse
     @GetMapping("/{authorId}/books")
     public ResponseEntity<List<BookResponseDto>> getAllBooksByAuthorId(@PathVariable Long authorId) {
         return ResponseEntity.ok(service.getBooksByAuthor(authorId));
