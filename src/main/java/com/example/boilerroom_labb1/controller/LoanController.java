@@ -3,6 +3,7 @@ package com.example.boilerroom_labb1.controller;
 
 import com.example.boilerroom_labb1.dto.loan.LoanRequestDto;
 import com.example.boilerroom_labb1.dto.loan.LoanResponseDto;
+import com.example.boilerroom_labb1.entity.Loan;
 import com.example.boilerroom_labb1.openapi.BadRequestResponse;
 import com.example.boilerroom_labb1.openapi.ConflictResponse;
 import com.example.boilerroom_labb1.service.LoanService;
@@ -46,4 +47,5 @@ public class LoanController {
     public ResponseEntity<List<LoanResponseDto>>getActiveLoans(){
         return ResponseEntity.ok(loanService.getAllLoans());
     }
+
 }
