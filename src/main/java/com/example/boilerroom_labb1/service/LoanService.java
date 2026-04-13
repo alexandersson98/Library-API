@@ -56,6 +56,8 @@ public class LoanService {
         throw new BookAlreadyLoanedException("Book already loaned");}
     }
 
+
+
     @Cacheable("loan")
     public  List<LoanResponseDto> getAllLoans(){
            return loanRepository.findByReturnDateIsNull().stream()

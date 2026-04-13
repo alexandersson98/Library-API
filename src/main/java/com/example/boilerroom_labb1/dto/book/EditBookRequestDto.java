@@ -1,9 +1,9 @@
-package com.example.boilerroom_labb1.dto.author;
+package com.example.boilerroom_labb1.dto.book;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
-@Schema(description = "Request object for creating a book")
+@Schema(description = "Request object for editing a book")
 public record EditBookRequestDto(
         @Schema(description = "Title of the book", example = "Stranger things")
         String title,
@@ -11,7 +11,6 @@ public record EditBookRequestDto(
         Long authorId,
         @Schema(description = "ISBN number of the book ", example = "Ev443-FRed")
         String isbn,
-
         @Schema(description = "Year the book was published", example = "1924")
         Integer publishedYear) {
 }

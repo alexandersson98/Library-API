@@ -1,7 +1,7 @@
 package com.example.boilerroom_labb1.controller;
 
 
-import com.example.boilerroom_labb1.dto.author.EditBookRequestDto;
+import com.example.boilerroom_labb1.dto.book.EditBookRequestDto;
 import com.example.boilerroom_labb1.dto.book.BookRequestDto;
 import com.example.boilerroom_labb1.dto.book.BookResponseDto;
 import com.example.boilerroom_labb1.openapi.BadRequestResponse;
@@ -65,13 +65,18 @@ public class BookController {
         return ResponseEntity.ok(service.getAll());
     }
 
+
+
     @Operation(summary = "Edit book",
             description = "Edit a book")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Book successfully updated"),
+    })
+    @NotFoundResponse
     @PatchMapping("/edit/{id}")
     public ResponseEntity<BookResponseDto>editBook(@PathVariable Long id, @RequestBody EditBookRequestDto editBookRequestDto){
         BookResponseDto response = service.editBook(id, editBookRequestDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(response);
     }
-
 }
