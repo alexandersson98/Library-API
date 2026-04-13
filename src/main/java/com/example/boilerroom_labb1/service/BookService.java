@@ -13,6 +13,7 @@ import com.example.boilerroom_labb1.exceptions.ValidationException;
 import com.example.boilerroom_labb1.mapper.BookMapper;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
+import com.example.boilerroom_labb1.repository.LoanRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,15 @@ public class BookService {
     private final BookRepository repository;
     private final BookMapper mapper;
     private final AuthorRepository authorRepository;
+    private final LoanRepository loanRepository;
 
 
     public BookService(BookRepository repository,
-    BookMapper mapper, AuthorRepository authorRepository){
+    BookMapper mapper, AuthorRepository authorRepository, LoanRepository loanRepository){
         this.repository = repository;
         this.mapper = mapper;
         this.authorRepository = authorRepository;
+        this.loanRepository = loanRepository;
 
     }
 
@@ -53,7 +56,7 @@ public class BookService {
     }
     public BookResponseDtoV2 createBookV2(BookRequestDto request){
         Book saved = createEntity(request);
-        return mapper.toResponseDtoV2(saved);
+        return mapper.toResponseDtoV2(saved, !loanRepository.existsByBookIdAndReturnDateIsNull(saved.getId()));
     }
 
     @Cacheable("book")
@@ -66,7 +69,7 @@ public class BookService {
     @Cacheable("book")
     public BookWrapperDtoV2 getBookByIdV2(Long id) {
         BookResponseDtoV2 dto  = repository.findById(id)
-                .map(mapper::toResponseDtoV2)
+                .map(book -> mapper.toResponseDtoV2(book, !loanRepository.existsByBookIdAndReturnDateIsNull(book.getId())))
                 .orElseThrow(() -> new NotFoundWithIdException("Book not found with id: ", + id));
         return new BookWrapperDtoV2(List.of(dto), "V2");
     }
@@ -74,7 +77,7 @@ public class BookService {
     public BookWrapperDtoV2 getAllV2() {
         List<BookResponseDtoV2> books = repository.findAll()
                 .stream()
-                .map(mapper::toResponseDtoV2)
+                .map(book -> mapper.toResponseDtoV2(book, !loanRepository.existsByBookIdAndReturnDateIsNull(book.getId())))
                 .toList();
         return new BookWrapperDtoV2(books, "V2");
     }
@@ -101,8 +104,6 @@ public class BookService {
             if (editBookRequest.publishedYear() != null) {
                 book.setPublishedYear(editBookRequest.publishedYear());
             }
-
             return mapper.toResponseDto(repository.save(book));
-
     }
 }

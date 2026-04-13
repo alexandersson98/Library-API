@@ -48,4 +48,6 @@ public class LoanController {
         return ResponseEntity.ok(loanService.getAllLoans());
     }
 
+
+
 }

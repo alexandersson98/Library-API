@@ -30,7 +30,7 @@ public class BookMapper {
                 return book;
     }
 
-    public BookResponseDtoV2 toResponseDtoV2(Book book){
+    public BookResponseDtoV2 toResponseDtoV2(Book book, Boolean available){
         return new BookResponseDtoV2(
                 book.getId(),
                 book.getTitle(),
@@ -38,6 +38,7 @@ public class BookMapper {
                         book.getAuthor().getName()),
                 book.getIsbn(),
                 book.getPublishedYear(),
-                true);
+                available
+                );
     }
 }
