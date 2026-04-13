@@ -216,17 +216,5 @@ public class LoanControllerTest {
                .filter(f -> f.getStatusCode() == HttpStatus.CONFLICT)
                .count()).isEqualTo(1);
 
-
-
-
-
-
-
-
-
-
-
-
-
         }
 }
