@@ -17,6 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -93,16 +96,17 @@ public class AuthorControllerTest {
                 bookRequest,
                 BookResponseDto.class);
 
-        ResponseEntity<BookResponseDto[]> booksByAuthor = restTemplate.getForEntity(
+        ResponseEntity<Map> booksByAuthor = restTemplate.getForEntity(
                 "/api/v1/author/{authorId}/books",
-                BookResponseDto[].class,
+                Map.class,
                 authorId
         );
         assertEquals(HttpStatus.CREATED, authorResponse.getStatusCode());
         assertEquals(HttpStatus.OK, booksByAuthor.getStatusCode());
         assertNotNull(booksByAuthor.getBody());
-        assertEquals(1, booksByAuthor.getBody().length);
-        assertEquals("Harry Potter", booksByAuthor.getBody()[0].title());
+        List<Map> content = (List<Map>) booksByAuthor.getBody().get("content");
+        assertEquals(1, content.size());
+        assertEquals("Harry Potter", content.get(0).get("title"));
     }
 
     @Test
