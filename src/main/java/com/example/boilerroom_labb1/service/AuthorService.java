@@ -12,9 +12,9 @@ import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 
 @Service
@@ -51,15 +51,13 @@ public class AuthorService {
     }
 
     @Cacheable("authors")
-    public List<BookResponseDto> getBooksByAuthor(Long authorId) {
+    public Page<BookResponseDto> getBooksByAuthor(Long authorId, Pageable pageable) {
 
         if (!repository.existsById(authorId)) {
             throw new NotFoundException("Author not found");
         }
 
-        return bookRepository.findByAuthorId(authorId)
-                .stream()
-                .map(bookMapper::toResponseDto)
-                .toList();
+        return bookRepository.findByAuthorId(authorId, pageable)
+                .map(bookMapper::toResponseDto);
     }
 }

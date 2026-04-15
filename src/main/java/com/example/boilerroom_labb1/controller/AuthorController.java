@@ -10,11 +10,12 @@ import com.example.boilerroom_labb1.service.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping("/api/v1/author")
@@ -53,7 +54,7 @@ public class AuthorController {
     @ApiResponse(responseCode = "200", description = "success")
     @NotFoundResponse
     @GetMapping("/{authorId}/books")
-    public ResponseEntity<List<BookResponseDto>> getAllBooksByAuthorId(@PathVariable Long authorId) {
-        return ResponseEntity.ok(service.getBooksByAuthor(authorId));
+    public ResponseEntity<Page<BookResponseDto>> getAllBooksByAuthorId(@PathVariable Long authorId,@ParameterObject Pageable pageable) {
+        return ResponseEntity.ok(service.getBooksByAuthor(authorId, pageable));
     }
 }
