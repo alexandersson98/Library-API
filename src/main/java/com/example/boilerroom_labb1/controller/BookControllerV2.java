@@ -44,9 +44,8 @@ public class BookControllerV2 {
 
     @Operation(summary = "Get a book with id",
     description = "Using version2 returns a book with given id")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Found"),
-    })
+
+            @ApiResponse(responseCode = "200", description = "Found")
     @NotFoundResponse
     @GetMapping("/{id}")
     public ResponseEntity<BookWrapperDtoV2>getBookById(@PathVariable Long id){
@@ -57,9 +56,7 @@ public class BookControllerV2 {
     }
     @Operation(summary = "Get all books",
     description = "Using version2 returns a wrapped list of all books")
-    @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Success")
-    })
     @GetMapping
     public ResponseEntity <BookWrapperDtoV2>getAllV2() {
         BookWrapperDtoV2 response = service.getAllV2();

@@ -30,9 +30,7 @@ public class BookController {
 
     @Operation(summary = "Create book",
             description = "Add a book to the database")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Created"),
-    })
+            @ApiResponse(responseCode = "201", description = "Created")
     @BadRequestResponse
     @PostMapping
     public ResponseEntity<BookResponseDto> create(@Valid @RequestBody BookRequestDto request) {
@@ -44,10 +42,10 @@ public class BookController {
 
     @Operation(summary = "Get a book with id",
             description = "Returns a book with given id")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Found"),
-    })
+
+    @ApiResponse(responseCode = "200", description = "Found")
     @NotFoundResponse
+
     @GetMapping("/{id}")
     public ResponseEntity<BookResponseDto> getBookById(@PathVariable Long id){
         BookResponseDto response = service.getBookById(id);
@@ -57,9 +55,7 @@ public class BookController {
     }
     @Operation(summary = "Get all books",
             description = "Returns a list of all books")
-    @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Success")
-    })
     @GetMapping
     public ResponseEntity <List<BookResponseDto>> getBooks(){
         return ResponseEntity.ok(service.getAll());
@@ -69,9 +65,7 @@ public class BookController {
 
     @Operation(summary = "Edit book",
             description = "Edit a book")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Book successfully updated"),
-    })
+            @ApiResponse(responseCode = "200", description = "Book successfully updated")
     @NotFoundResponse
     @PatchMapping("/edit/{id}")
     public ResponseEntity<BookResponseDto>editBook(@PathVariable Long id, @RequestBody EditBookRequestDto editBookRequestDto){
