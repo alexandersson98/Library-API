@@ -67,20 +67,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-        public ResponseEntity<ApiErrorResponse>handleResourceNotFound(
-            ResourceNotFoundException ex,
-            HttpServletRequest request
-    ) {
-        ApiErrorResponse error = new ApiErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-    }
-    @ExceptionHandler(NotFoundException.class)
+@ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiErrorResponse>handleBookAlreadyLoaned(
             NotFoundException ex,
             HttpServletRequest request

@@ -29,9 +29,9 @@ public class LoanController {
 
     @Operation(summary = "Create loan",
     description = "Create loan and add to database")
-    @ApiResponse(responseCode = "201", description = "Created")
-    @BadRequestResponse
-    @ConflictResponse
+            @ApiResponse(responseCode = "201", description = "Created")
+            @BadRequestResponse
+            @ConflictResponse
     @PostMapping
     public ResponseEntity<LoanResponseDto>createLoan(@RequestBody LoanRequestDto request){
         return ResponseEntity.status(HttpStatus.CREATED).body(loanService.createLoan(request));
@@ -40,12 +40,18 @@ public class LoanController {
 
     @Operation(summary = "Get all active loans",
     description = "Returns a list of all active loans")
-    @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Success")
-    })
     @GetMapping
     public ResponseEntity<List<LoanResponseDto>>getActiveLoans(){
         return ResponseEntity.ok(loanService.getAllLoans());
+    }
+    @Operation(summary = "Return book",
+    description = "Returns a loaned book by setting the return date to now")
+    @ApiResponse(responseCode = "200", description = "The book has been returned and the loan is no longer active")
+    @PatchMapping("/{id}")
+    public ResponseEntity<LoanResponseDto>returnBook(@PathVariable Long id){
+        LoanResponseDto response = loanService.returnBook(id);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
