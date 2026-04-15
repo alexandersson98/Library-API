@@ -7,7 +7,7 @@ import com.example.boilerroom_labb1.entity.Book;
 import com.example.boilerroom_labb1.entity.Loan;
 import com.example.boilerroom_labb1.exceptions.BookAlreadyLoanedException;
 import com.example.boilerroom_labb1.exceptions.NotFoundWithIdException;
-import com.example.boilerroom_labb1.exceptions.ResourceNotFoundException;
+import com.example.boilerroom_labb1.exceptions.NotFoundException;
 import com.example.boilerroom_labb1.exceptions.ValidationException;
 import com.example.boilerroom_labb1.mapper.LoanMapper;
 import com.example.boilerroom_labb1.repository.BookRepository;
@@ -39,7 +39,7 @@ public class LoanService {
     @Transactional
     public LoanResponseDto createLoan(LoanRequestDto request){
         Book book = bookRepository.findByIdWithLock(request.bookId())
-                .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+                .orElseThrow(() -> new NotFoundException("Book not found"));
         if (loanRepository.existsByBookIdAndReturnDateIsNull(book.getId())){
             throw new BookAlreadyLoanedException("Book already loaned.");
         }

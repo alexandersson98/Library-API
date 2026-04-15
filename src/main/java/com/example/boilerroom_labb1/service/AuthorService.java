@@ -5,7 +5,7 @@ import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
 import com.example.boilerroom_labb1.dto.book.BookResponseDto;
 import com.example.boilerroom_labb1.entity.Author;
 import com.example.boilerroom_labb1.exceptions.NotFoundWithIdException;
-import com.example.boilerroom_labb1.exceptions.ResourceNotFoundException;
+import com.example.boilerroom_labb1.exceptions.NotFoundException;
 import com.example.boilerroom_labb1.mapper.AuthorMapper;
 import com.example.boilerroom_labb1.mapper.BookMapper;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
@@ -54,7 +54,7 @@ public class AuthorService {
     public List<BookResponseDto> getBooksByAuthor(Long authorId) {
 
         if (!repository.existsById(authorId)) {
-            throw new ResourceNotFoundException("Author not found");
+            throw new NotFoundException("Author not found");
         }
 
         return bookRepository.findByAuthorId(authorId)

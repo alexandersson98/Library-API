@@ -8,7 +8,6 @@ import com.example.boilerroom_labb1.dto.book.BookWrapperDtoV2;
 import com.example.boilerroom_labb1.entity.Author;
 import com.example.boilerroom_labb1.entity.Book;
 import com.example.boilerroom_labb1.exceptions.NotFoundWithIdException;
-import com.example.boilerroom_labb1.exceptions.ResourceNotFoundException;
 import com.example.boilerroom_labb1.exceptions.ValidationException;
 import com.example.boilerroom_labb1.mapper.BookMapper;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
@@ -40,7 +39,7 @@ public class BookService {
     @CacheEvict(value = "book", allEntries = true)
     public Book createEntity(BookRequestDto request){
         Author author = authorRepository.findById(request.authorId())
-                .orElseThrow(() -> new ResourceNotFoundException("Author with id " + request.authorId() + "not found"));
+                .orElseThrow(() -> new NotFoundWithIdException("Author not found with id: ", request.authorId()));
 
         Book book = mapper.toEntity(request);
         book.setAuthor(author);
