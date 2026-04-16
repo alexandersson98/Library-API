@@ -23,5 +23,4 @@ public record BookResponseDtoV2(
 
         @Schema(description = "Availability status of the book", example = "true")
         boolean available
-
 ) {}

@@ -12,6 +12,7 @@ import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
@@ -50,7 +51,7 @@ public class AuthorService {
                 .orElseThrow(() -> new NotFoundWithIdException("Author not found with id: ", + id));
     }
 
-    @Cacheable("authors")
+        @Cacheable("book")
     public Page<BookResponseDto> getBooksByAuthor(Long authorId, Pageable pageable) {
 
         if (!repository.existsById(authorId)) {

@@ -1,6 +1,5 @@
 package com.example.boilerroom_labb1.dto.loan;
 
-import com.example.boilerroom_labb1.dto.book.BookResponseDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;

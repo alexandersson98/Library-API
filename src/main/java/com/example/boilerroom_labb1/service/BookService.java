@@ -89,7 +89,7 @@ public class BookService {
 
     }
 
- @CacheEvict(value = "book", key = "#id")
+ @CacheEvict(value = "book", allEntries = true)
     public BookResponseDto editBook(Long id, EditBookRequestDto editBookRequest){
         Book book = repository.findById(id).orElseThrow(() -> new NotFoundWithIdException("Book not found with id: ", + id));
             if(editBookRequest.title() != null){
