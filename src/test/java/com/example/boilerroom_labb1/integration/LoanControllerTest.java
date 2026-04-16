@@ -253,4 +253,38 @@ public class LoanControllerTest {
         assertEquals("Book has been returned", returnResponse.getBody().message());
         assertThat(loanRepository.count()).isEqualTo(0);
     }
+    @Test
+    void shouldReturn400WhenBookAlreadyReturned(){
+        AuthorRequestDto authorRequest = new AuthorRequestDto("Joel Göransson");
+
+        ResponseEntity<AuthorResponseDto> authorResponse = restTemplate.postForEntity("/api/v1/author",
+                authorRequest,
+                AuthorResponseDto.class);
+
+        Long authorId = authorResponse.getBody().id();
+
+        BookRequestDto bookRequest = new BookRequestDto("Peaky Blinders", authorId, "eeee", 2006);
+        ResponseEntity<BookResponseDto> bookResponse = restTemplate.postForEntity("/api/v1/books",
+                bookRequest,
+                BookResponseDto.class);
+
+        Long bookId = bookResponse.getBody().id();
+
+        LoanRequestDto loanRequest = new LoanRequestDto(bookId);
+        ResponseEntity<LoanResponseDto> loanResponse = restTemplate.postForEntity("/api/v1/loans",
+                loanRequest,
+                LoanResponseDto.class);
+
+        Long loanId = loanResponse.getBody().id();
+
+        restTemplate.exchange("/api/v1/loans/" + loanId, HttpMethod.PATCH, null, LoanHistoryResponseDto.class);
+
+        ResponseEntity<String> returnAgain = restTemplate.exchange(
+                "/api/v1/loans/" + loanId,
+                HttpMethod.PATCH,
+                null,
+                String.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, returnAgain.getStatusCode());
+    }
 }
