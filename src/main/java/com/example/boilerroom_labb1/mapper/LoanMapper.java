@@ -13,8 +13,7 @@ public class LoanMapper {
                 loan.getId(),
                 loan.getBook().getId(),
                 loan.getBook().getTitle(),
-                loan.getLoanDate(),
-                loan.getReturnDate()
+                loan.getLoanDate()
         );
     }
 }

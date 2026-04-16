@@ -19,7 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -105,18 +106,16 @@ public class AuthorBookTest {
         Long createdLoanId = loanResponse.getBody().id();
 
 
-        ResponseEntity<LoanResponseDto[]> loanResponseDto = restTemplate.getForEntity("/api/v1/loans",
-                LoanResponseDto[].class);
-
+        ResponseEntity<Map> loanResponseDto = restTemplate.getForEntity("/api/v1/loans", Map.class);
 
         assertEquals(HttpStatus.OK, loanResponseDto.getStatusCode());
         assertNotNull(loanResponseDto);
 
-        LoanResponseDto[] loans = loanResponseDto.getBody();
+        List<Map> content = (List<Map>) loanResponseDto.getBody().get("content");
+        assertNotNull(content);
 
-        Boolean found = Arrays.stream(loans)
-                .anyMatch(loan -> loan.id().equals(createdLoanId));
-
+        Boolean found = content.stream()
+                .anyMatch(loan -> createdLoanId.equals(((Number) loan.get("id")).longValue()));
 
         assertTrue(found);
     }

@@ -8,6 +8,5 @@ public record LoanResponseDto(@Schema(description = "Unique identifier of the bo
                               Long bookId,
                               @Schema(description = "Title of the book", example = "Hunger Games")
                               String bookTitle,
-                              LocalDate loanDate,
-                              LocalDate returnDate) {
+                              LocalDate loanDate) {
 }

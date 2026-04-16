@@ -1,6 +1,7 @@
 package com.example.boilerroom_labb1.controller;
 
 
+import com.example.boilerroom_labb1.dto.loan.LoanHistoryResponseDto;
 import com.example.boilerroom_labb1.dto.loan.LoanRequestDto;
 import com.example.boilerroom_labb1.dto.loan.LoanResponseDto;
 import com.example.boilerroom_labb1.entity.Loan;
@@ -46,14 +47,14 @@ public class LoanController {
             @ApiResponse(responseCode = "200", description = "Success")
     @GetMapping
     public ResponseEntity<Page<LoanResponseDto>>getActiveLoans(@ParameterObject Pageable pageable){
-        return ResponseEntity.ok(loanService.getAllLoans(pageable));
+        return ResponseEntity.ok(loanService.getAllActiveLoans(pageable));
     }
     @Operation(summary = "Return book",
     description = "Returns a loaned book by setting the return date to now")
     @ApiResponse(responseCode = "200", description = "The book has been returned and the loan is no longer active")
     @PatchMapping("/{id}")
-    public ResponseEntity<LoanResponseDto>returnBook(@PathVariable Long id){
-        LoanResponseDto response = loanService.returnBook(id);
+    public ResponseEntity<LoanHistoryResponseDto>returnBook(@PathVariable Long id){
+        LoanHistoryResponseDto response = loanService.returnBook(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
