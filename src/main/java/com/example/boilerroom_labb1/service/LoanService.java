@@ -15,6 +15,7 @@ import com.example.boilerroom_labb1.repository.LoanRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +35,10 @@ public class LoanService {
         this.bookRepository = bookRepository;
         this.loanMapper = loanMapper;
     }
-
-    @CacheEvict(value = "loan", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "loan", allEntries = true),
+            @CacheEvict(value = "book", allEntries = true)
+    })
     @Transactional
     public LoanResponseDto createLoan(LoanRequestDto request){
         Book book = bookRepository.findByIdWithLock(request.bookId())
@@ -63,8 +66,10 @@ public class LoanService {
                 .map(loanMapper::toResponseDto)
                 .toList();
     }
-
-    @CacheEvict(value = "loan", allEntries = true)
+    @Caching(evict = {
+            @CacheEvict(value = "loan", allEntries = true),
+            @CacheEvict(value = "book", allEntries = true)
+    })
     public LoanResponseDto returnBook(Long id){
         Loan loan = loanRepository.findById(id).orElseThrow(() -> new NotFoundWithIdException("Loan not found with id: ", id));
             if(loan.getReturnDate() != null) {
