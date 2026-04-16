@@ -287,4 +287,12 @@ public class LoanControllerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, returnAgain.getStatusCode());
     }
+
+    @Test
+    void demonstratesRaceConditionProblem() throws Exception {
+        // utan locking kan 2 trådar läsa boken samtidigt och båda ser den som ledig
+        // då skapas 2 lån på samma bok vilket är fel
+        // med pessimistic locking låses raden i databasen så bara en tråd åt gången kan läsa
+        // testet shouldAllowOnlyOneLoanWhenConcurrentRequests visar att lösningen fungerar
+    }
 }

@@ -5,6 +5,7 @@ import com.example.boilerroom_labb1.dto.author.AuthorRequestDto;
 import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
 import com.example.boilerroom_labb1.dto.book.BookRequestDto;
 import com.example.boilerroom_labb1.dto.book.v1.BookResponseDto;
+import com.example.boilerroom_labb1.dto.book.v1.EditBookRequestDto;
 import com.example.boilerroom_labb1.exceptions.handler.ApiErrorResponse;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
@@ -13,9 +14,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -125,6 +129,42 @@ public class BookControllerTest {
        assertThat(response.getBody()).isNotNull();
        assertThat(response.getBody().message().contains("Published year must be greater than 1700"));
 
+    }
+
+    @Test
+    void shouldReturn200AndUpdatedBookWhenEditingBook() {
+        AuthorRequestDto authorRequest = new AuthorRequestDto("Matt Duffer");
+        ResponseEntity<AuthorResponseDto> authorResponse =
+                restTemplate.postForEntity("/api/v1/author", authorRequest, AuthorResponseDto.class);
+
+        AuthorRequestDto newAuthorRequest = new AuthorRequestDto("JK Rowling");
+        ResponseEntity<AuthorResponseDto> newAuthorResponse =
+                restTemplate.postForEntity("/api/v1/author", newAuthorRequest, AuthorResponseDto.class);
+        Long newAuthorId = newAuthorResponse.getBody().id();
+
+        Long authorId = authorResponse.getBody().id();
+
+        BookRequestDto bookRequest = new BookRequestDto("Stranger Things", authorId, "EV443-FRed", 2016);
+        ResponseEntity<BookResponseDto> bookResponse =
+                restTemplate.postForEntity("/api/v1/books", bookRequest, BookResponseDto.class);
+
+        Long bookId = bookResponse.getBody().id();
+
+        EditBookRequestDto editRequest = new EditBookRequestDto("Stranger Things 2", newAuthorId , "ISBN", 2022);
+
+        ResponseEntity<BookResponseDto> editResponse = restTemplate.exchange(
+                "/api/v1/books/edit/" + bookId,
+                HttpMethod.PATCH,
+                new HttpEntity<>(editRequest),
+                BookResponseDto.class
+        );
+
+        assertThat(editResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(editResponse.getBody()).isNotNull();
+        assertThat(editResponse.getBody().title()).isEqualTo("Stranger Things 2");
+        assertThat(editResponse.getBody().authorName()).isEqualTo("JK Rowling");
+        assertThat(editResponse.getBody().isbn()).isEqualTo("ISBN");
+        assertThat(editResponse.getBody().publishedYear()).isEqualTo(2022);
     }
 }
 
