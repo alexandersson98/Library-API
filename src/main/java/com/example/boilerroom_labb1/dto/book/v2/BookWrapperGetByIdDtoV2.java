@@ -16,5 +16,4 @@ public record BookWrapperGetByIdDtoV2(
                 example = "v2"
         )
         String version
-
 ) {}

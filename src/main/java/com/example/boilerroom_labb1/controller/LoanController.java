@@ -10,6 +10,7 @@ import com.example.boilerroom_labb1.service.LoanService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ public class LoanController {
     description = "Returns a list of all active loans")
             @ApiResponse(responseCode = "200", description = "Success")
     @GetMapping
-    public ResponseEntity<Page<LoanResponseDto>>getActiveLoans(Pageable pageable){
+    public ResponseEntity<Page<LoanResponseDto>>getActiveLoans(@ParameterObject Pageable pageable){
         return ResponseEntity.ok(loanService.getAllLoans(pageable));
     }
     @Operation(summary = "Return book",

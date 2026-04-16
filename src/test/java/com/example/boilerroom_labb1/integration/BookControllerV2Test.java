@@ -5,6 +5,7 @@ import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
 import com.example.boilerroom_labb1.dto.book.BookRequestDto;
 import com.example.boilerroom_labb1.dto.book.v2.BookResponseDtoV2;
 import com.example.boilerroom_labb1.dto.book.v2.BookWrapperDtoV2;
+import com.example.boilerroom_labb1.dto.book.v2.BookWrapperGetByIdDtoV2;
 import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -89,17 +90,17 @@ public class BookControllerV2Test {
 
         Long bookId = created.getBody().id();
 
-        ResponseEntity<BookWrapperDtoV2> response = restTemplate.getForEntity("/api/v2/books/" + bookId,
-                BookWrapperDtoV2.class
+        ResponseEntity<BookWrapperGetByIdDtoV2> response = restTemplate.getForEntity("/api/v2/books/" + bookId,
+                BookWrapperGetByIdDtoV2.class
         );
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().version()).isEqualTo("V2");
-        assertThat(response.getBody().data()).hasSize(1);
 
 
-        BookResponseDtoV2 book = response.getBody().data().get(0);
+
+        BookResponseDtoV2 book = response.getBody().data();
 
         assertThat(book.title()).isEqualTo("Stranger Things");
         assertThat(book.author().id()).isEqualTo(authorId);
