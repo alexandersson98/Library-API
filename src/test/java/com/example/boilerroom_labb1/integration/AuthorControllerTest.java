@@ -104,6 +104,7 @@ public class AuthorControllerTest {
         assertEquals(HttpStatus.CREATED, authorResponse.getStatusCode());
         assertEquals(HttpStatus.OK, booksByAuthor.getStatusCode());
         assertNotNull(booksByAuthor.getBody());
+
         List<Map> content = (List<Map>) booksByAuthor.getBody().get("content");
         assertEquals(1, content.size());
         assertEquals("Harry Potter", content.get(0).get("title"));

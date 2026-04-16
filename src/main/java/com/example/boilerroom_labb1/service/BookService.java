@@ -15,6 +15,8 @@ import com.example.boilerroom_labb1.repository.BookRepository;
 import com.example.boilerroom_labb1.repository.LoanRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -81,11 +83,10 @@ public class BookService {
         return new BookWrapperDtoV2(books, "V2");
     }
     @Cacheable("book")
-    public List<BookResponseDto>getAll(){
-        List<Book>all = repository.findAll();
-        return all.stream()
-                .map(mapper::toResponseDto)
-                .toList();
+    public Page<BookResponseDto> getAll(Pageable pageable){
+        Page<Book>all = repository.findAll(pageable);
+        return all.map(mapper::toResponseDto);
+
     }
 
  @CacheEvict(value = "book", key = "#id")
