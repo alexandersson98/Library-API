@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.*;
 import java.util.stream.Stream;
 
@@ -97,22 +98,15 @@ public class LoanControllerTest {
                 LoanResponseDto.class);
 
 
-        ResponseEntity<LoanResponseDto[]> activeLoans = restTemplate.getForEntity("/api/v1/loans",
-                LoanResponseDto[].class);
-
-        LoanResponseDto[] loanResponseDto = activeLoans.getBody();
-        assertNotNull(loanResponseDto);
-        assertTrue(loanResponseDto.length > 0);
+        ResponseEntity<Map> activeLoans = restTemplate.getForEntity("/api/v1/loans", Map.class);
 
         assertEquals(HttpStatus.CREATED, loanResponse.getStatusCode());
         assertEquals(HttpStatus.OK, activeLoans.getStatusCode());
 
-        LoanResponseDto[] loanResponseDtos = activeLoans.getBody();
-        assertNotNull(loanResponseDtos);
-        assertTrue(loanResponseDtos.length > 0);
-
-        LoanResponseDto firstLoan = loanResponseDtos[0];
-        assertNotNull(firstLoan);
+        List<Map> content = (List<Map>) activeLoans.getBody().get("content");
+        assertNotNull(content);
+        assertTrue(content.size() > 0);
+        assertNotNull(content.get(0));
     }
 
     @Test

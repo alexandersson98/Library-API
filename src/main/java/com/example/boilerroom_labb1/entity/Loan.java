@@ -17,7 +17,6 @@ public class Loan {
     private Book book;
 
     private LocalDate loanDate;
-    private LocalDate returnDate;
 
 
     public Loan() {
@@ -35,19 +34,11 @@ public class Loan {
         return loanDate;
     }
 
-    public LocalDate getReturnDate() {
-        return returnDate;
-    }
-
     public void setBook(Book book) {
         this.book = book;
     }
 
     public void setLoanDate(LocalDate loanDate) {
         this.loanDate = loanDate;
-    }
-
-    public void setReturnDate(LocalDate returnDate) {
-        this.returnDate = returnDate;
     }
 }

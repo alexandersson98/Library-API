@@ -58,7 +58,7 @@ public class BookService {
     }
     public BookResponseDtoV2 createBookV2(BookRequestDto request){
         Book saved = createEntity(request);
-        return mapper.toResponseDtoV2(saved, !loanRepository.existsByBookIdAndReturnDateIsNull(saved.getId()));
+        return mapper.toResponseDtoV2(saved, !loanRepository.existsByBookId(saved.getId()));
     }
 
     @Cacheable("book")
@@ -71,14 +71,14 @@ public class BookService {
     @Cacheable("book")
     public BookWrapperGetByIdDtoV2 getBookByIdV2(Long id) {
         BookResponseDtoV2 dto  = repository.findById(id)
-                .map(book -> mapper.toResponseDtoV2(book, !loanRepository.existsByBookIdAndReturnDateIsNull(book.getId())))
+                .map(book -> mapper.toResponseDtoV2(book, !loanRepository.existsByBookId(book.getId())))
                 .orElseThrow(() -> new NotFoundWithIdException("Book not found with id: ", + id));
         return new BookWrapperGetByIdDtoV2(dto, "V2");
     }
     @Cacheable("book")
     public BookWrapperDtoV2 getAllV2(Pageable pageable) {
         Page<BookResponseDtoV2> books = repository.findAll(pageable)
-                .map(book -> mapper.toResponseDtoV2(book, !loanRepository.existsByBookIdAndReturnDateIsNull(book.getId())));
+                .map(book -> mapper.toResponseDtoV2(book, !loanRepository.existsByBookId(book.getId())));
 
         return new BookWrapperDtoV2(books, "V2");
     }
