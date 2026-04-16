@@ -11,6 +11,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,8 +60,8 @@ public class BookController {
             description = "Returns a list of all books")
             @ApiResponse(responseCode = "200", description = "Success")
     @GetMapping
-    public ResponseEntity <List<BookResponseDto>> getBooks(){
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity <Page<BookResponseDto>> getBooks(@ParameterObject Pageable pageable){
+        return ResponseEntity.ok(service.getAll(pageable));
     }
 
 
