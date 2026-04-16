@@ -39,7 +39,6 @@ public class BookService {
 
     }
 
-    @CacheEvict(value = "book", allEntries = true)
     public Book createEntity(BookRequestDto request){
         Author author = authorRepository.findById(request.authorId())
                 .orElseThrow(() -> new NotFoundWithIdException("Author not found with id: ", request.authorId()));
@@ -52,10 +51,13 @@ public class BookService {
         return repository.save(book);
     }
 
+    @CacheEvict(value = "book", allEntries = true)
     public BookResponseDto createBook(BookRequestDto request){
         Book saved = createEntity(request);
         return mapper.toResponseDto(saved);
     }
+
+    @CacheEvict(value = "book", allEntries = true)
     public BookResponseDtoV2 createBookV2(BookRequestDto request){
         Book saved = createEntity(request);
         return mapper.toResponseDtoV2(saved, !loanRepository.existsByBookId(saved.getId()));
