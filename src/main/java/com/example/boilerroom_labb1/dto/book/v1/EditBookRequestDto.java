@@ -1,4 +1,4 @@
-package com.example.boilerroom_labb1.dto.book;
+package com.example.boilerroom_labb1.dto.book.v1;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

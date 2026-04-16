@@ -1,10 +1,11 @@
 package com.example.boilerroom_labb1.service;
 
-import com.example.boilerroom_labb1.dto.book.EditBookRequestDto;
+import com.example.boilerroom_labb1.dto.book.v1.EditBookRequestDto;
 import com.example.boilerroom_labb1.dto.book.BookRequestDto;
-import com.example.boilerroom_labb1.dto.book.BookResponseDto;
-import com.example.boilerroom_labb1.dto.book.BookResponseDtoV2;
-import com.example.boilerroom_labb1.dto.book.BookWrapperDtoV2;
+import com.example.boilerroom_labb1.dto.book.v1.BookResponseDto;
+import com.example.boilerroom_labb1.dto.book.v2.BookResponseDtoV2;
+import com.example.boilerroom_labb1.dto.book.v2.BookWrapperDtoV2;
+import com.example.boilerroom_labb1.dto.book.v2.BookWrapperGetByIdDtoV2;
 import com.example.boilerroom_labb1.entity.Author;
 import com.example.boilerroom_labb1.entity.Book;
 import com.example.boilerroom_labb1.exceptions.NotFoundWithIdException;
@@ -68,18 +69,17 @@ public class BookService {
     }
 
     @Cacheable("book")
-    public BookWrapperDtoV2 getBookByIdV2(Long id) {
+    public BookWrapperGetByIdDtoV2 getBookByIdV2(Long id) {
         BookResponseDtoV2 dto  = repository.findById(id)
                 .map(book -> mapper.toResponseDtoV2(book, !loanRepository.existsByBookIdAndReturnDateIsNull(book.getId())))
                 .orElseThrow(() -> new NotFoundWithIdException("Book not found with id: ", + id));
-        return new BookWrapperDtoV2(List.of(dto), "V2");
+        return new BookWrapperGetByIdDtoV2(dto, "V2");
     }
     @Cacheable("book")
-    public BookWrapperDtoV2 getAllV2() {
-        List<BookResponseDtoV2> books = repository.findAll()
-                .stream()
-                .map(book -> mapper.toResponseDtoV2(book, !loanRepository.existsByBookIdAndReturnDateIsNull(book.getId())))
-                .toList();
+    public BookWrapperDtoV2 getAllV2(Pageable pageable) {
+        Page<BookResponseDtoV2> books = repository.findAll(pageable)
+                .map(book -> mapper.toResponseDtoV2(book, !loanRepository.existsByBookIdAndReturnDateIsNull(book.getId())));
+
         return new BookWrapperDtoV2(books, "V2");
     }
     @Cacheable("book")

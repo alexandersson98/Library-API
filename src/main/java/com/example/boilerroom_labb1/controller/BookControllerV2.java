@@ -2,8 +2,9 @@ package com.example.boilerroom_labb1.controller;
 
 
 import com.example.boilerroom_labb1.dto.book.BookRequestDto;
-import com.example.boilerroom_labb1.dto.book.BookResponseDtoV2;
-import com.example.boilerroom_labb1.dto.book.BookWrapperDtoV2;
+import com.example.boilerroom_labb1.dto.book.v2.BookResponseDtoV2;
+import com.example.boilerroom_labb1.dto.book.v2.BookWrapperDtoV2;
+import com.example.boilerroom_labb1.dto.book.v2.BookWrapperGetByIdDtoV2;
 import com.example.boilerroom_labb1.openapi.BadRequestResponse;
 import com.example.boilerroom_labb1.openapi.NotFoundResponse;
 import com.example.boilerroom_labb1.service.BookService;
@@ -11,6 +12,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +51,8 @@ public class BookControllerV2 {
             @ApiResponse(responseCode = "200", description = "Found")
     @NotFoundResponse
     @GetMapping("/{id}")
-    public ResponseEntity<BookWrapperDtoV2>getBookById(@PathVariable Long id){
-        BookWrapperDtoV2 response = service.getBookByIdV2(id);
+    public ResponseEntity<BookWrapperGetByIdDtoV2>getBookById(@PathVariable Long id){
+        BookWrapperGetByIdDtoV2 response = service.getBookByIdV2(id);
         return ResponseEntity
                 .ok()
                 .body(response);
@@ -58,8 +61,8 @@ public class BookControllerV2 {
     description = "Using version2 returns a wrapped list of all books")
             @ApiResponse(responseCode = "200", description = "Success")
     @GetMapping
-    public ResponseEntity <BookWrapperDtoV2>getAllV2() {
-        BookWrapperDtoV2 response = service.getAllV2();
+    public ResponseEntity <BookWrapperDtoV2>getAllV2(@ParameterObject Pageable pageable) {
+        BookWrapperDtoV2 response = service.getAllV2(pageable);
         return ResponseEntity
                 .ok()
                 .body(response);

@@ -3,8 +3,8 @@ package com.example.boilerroom_labb1.mapper;
 
 import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
 import com.example.boilerroom_labb1.dto.book.BookRequestDto;
-import com.example.boilerroom_labb1.dto.book.BookResponseDto;
-import com.example.boilerroom_labb1.dto.book.BookResponseDtoV2;
+import com.example.boilerroom_labb1.dto.book.v1.BookResponseDto;
+import com.example.boilerroom_labb1.dto.book.v2.BookResponseDtoV2;
 import com.example.boilerroom_labb1.entity.Book;
 import org.springframework.stereotype.Component;
 
