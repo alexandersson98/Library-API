@@ -81,6 +81,7 @@ public class LoanService {
     @Caching(evict = {
             @CacheEvict(value = "loan", allEntries = true),
             @CacheEvict(value = "book", allEntries = true),
+            @CacheEvict(value = "loanHistory", allEntries = true),
     })
     @Transactional
     public LoanHistoryResponseDto returnBook(Long id){
@@ -92,5 +93,12 @@ public class LoanService {
         loanRepository.deleteById(id);
          return loanHistoryMapper.toResponseDto(response);
 
+    }
+
+
+    @Cacheable("loanHistory")
+    public Page<LoanHistoryResponseDto>getLoanHistoryList(Pageable pageable){
+        return loanHistory.findAll(pageable)
+                .map(loanHistoryMapper:: toResponseDto);
     }
 }

@@ -58,6 +58,14 @@ public class LoanController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @Operation(summary = "Get loan history",
+    description = "Returns a list of loan history")
+    @GetMapping("/history")
+    @ApiResponse(responseCode = "200", description = "success")
+    public ResponseEntity<Page<LoanHistoryResponseDto>>getLoanHistoryList(@ParameterObject Pageable pageable){
+        return ResponseEntity.ok(loanService.getLoanHistoryList(pageable));
+    }
+
 
 
 }
