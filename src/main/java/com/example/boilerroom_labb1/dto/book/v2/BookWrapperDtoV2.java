@@ -1,8 +1,7 @@
-package com.example.boilerroom_labb1.dto.book;
+package com.example.boilerroom_labb1.dto.book.v2;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 @Schema(description = "Wrapper object for version 2 book responses")
 public record BookWrapperDtoV2(
@@ -11,7 +10,7 @@ public record BookWrapperDtoV2(
                 description = "List of books in version 2 format",
                 implementation = BookResponseDtoV2.class
         )
-        List<BookResponseDtoV2> data,
+        Page<BookResponseDtoV2> data,
 
         @Schema(
                 description = "API version",

@@ -4,7 +4,7 @@ package com.example.boilerroom_labb1.integration;
 import com.example.boilerroom_labb1.dto.author.AuthorRequestDto;
 import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
 import com.example.boilerroom_labb1.dto.book.BookRequestDto;
-import com.example.boilerroom_labb1.dto.book.BookResponseDto;
+import com.example.boilerroom_labb1.dto.book.v1.BookResponseDto;
 import com.example.boilerroom_labb1.dto.loan.LoanRequestDto;
 import com.example.boilerroom_labb1.dto.loan.LoanResponseDto;
 import com.example.boilerroom_labb1.repository.AuthorRepository;

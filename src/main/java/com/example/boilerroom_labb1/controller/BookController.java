@@ -1,15 +1,14 @@
 package com.example.boilerroom_labb1.controller;
 
 
-import com.example.boilerroom_labb1.dto.book.EditBookRequestDto;
+import com.example.boilerroom_labb1.dto.book.v1.EditBookRequestDto;
 import com.example.boilerroom_labb1.dto.book.BookRequestDto;
-import com.example.boilerroom_labb1.dto.book.BookResponseDto;
+import com.example.boilerroom_labb1.dto.book.v1.BookResponseDto;
 import com.example.boilerroom_labb1.openapi.BadRequestResponse;
 import com.example.boilerroom_labb1.openapi.NotFoundResponse;
 import com.example.boilerroom_labb1.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -17,8 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/books")

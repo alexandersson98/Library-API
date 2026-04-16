@@ -1,11 +1,13 @@
 package com.example.boilerroom_labb1.repository;
 
 import com.example.boilerroom_labb1.entity.Loan;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+
 
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     boolean existsByBookIdAndReturnDateIsNull(Long bookId);
-    List<Loan> findByReturnDateIsNull();
+    Page<Loan> findByReturnDateIsNull(Pageable pageable);
 }

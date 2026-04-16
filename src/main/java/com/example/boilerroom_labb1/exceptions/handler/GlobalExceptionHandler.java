@@ -1,6 +1,10 @@
-package com.example.boilerroom_labb1.exceptions;
+package com.example.boilerroom_labb1.exceptions.handler;
 
 
+import com.example.boilerroom_labb1.exceptions.BookAlreadyLoanedException;
+import com.example.boilerroom_labb1.exceptions.NotFoundException;
+import com.example.boilerroom_labb1.exceptions.NotFoundWithIdException;
+import com.example.boilerroom_labb1.exceptions.ValidationException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

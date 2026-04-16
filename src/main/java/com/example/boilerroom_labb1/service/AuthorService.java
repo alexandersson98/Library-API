@@ -2,7 +2,7 @@ package com.example.boilerroom_labb1.service;
 
 import com.example.boilerroom_labb1.dto.author.AuthorRequestDto;
 import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
-import com.example.boilerroom_labb1.dto.book.BookResponseDto;
+import com.example.boilerroom_labb1.dto.book.v1.BookResponseDto;
 import com.example.boilerroom_labb1.entity.Author;
 import com.example.boilerroom_labb1.exceptions.NotFoundWithIdException;
 import com.example.boilerroom_labb1.exceptions.NotFoundException;
@@ -12,7 +12,6 @@ import com.example.boilerroom_labb1.repository.AuthorRepository;
 import com.example.boilerroom_labb1.repository.BookRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;

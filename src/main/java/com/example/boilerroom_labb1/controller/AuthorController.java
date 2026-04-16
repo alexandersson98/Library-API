@@ -3,7 +3,7 @@ package com.example.boilerroom_labb1.controller;
 
 import com.example.boilerroom_labb1.dto.author.AuthorRequestDto;
 import com.example.boilerroom_labb1.dto.author.AuthorResponseDto;
-import com.example.boilerroom_labb1.dto.book.BookResponseDto;
+import com.example.boilerroom_labb1.dto.book.v1.BookResponseDto;
 import com.example.boilerroom_labb1.openapi.BadRequestResponse;
 import com.example.boilerroom_labb1.openapi.NotFoundResponse;
 import com.example.boilerroom_labb1.service.AuthorService;
