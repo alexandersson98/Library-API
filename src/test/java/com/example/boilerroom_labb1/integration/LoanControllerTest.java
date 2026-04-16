@@ -295,4 +295,58 @@ public class LoanControllerTest {
         // med pessimistic locking låses raden i databasen så bara en tråd åt gången kan läsa
         // testet shouldAllowOnlyOneLoanWhenConcurrentRequests visar att lösningen fungerar
     }
+
+    @Test
+    void shouldAllowOnlyOneLoanOutOf100ConcurrentRequests() throws Exception {
+        AuthorRequestDto authorRequest = new AuthorRequestDto("Joel Göransson");
+        ResponseEntity<AuthorResponseDto> authorResponse = restTemplate.postForEntity("/api/v1/author",
+                authorRequest, AuthorResponseDto.class);
+        Long authorId = authorResponse.getBody().id();
+
+        BookRequestDto bookRequest = new BookRequestDto("Peaky Blinders", authorId, "eeee", 2006);
+        ResponseEntity<BookResponseDto> bookResponse = restTemplate.postForEntity("/api/v1/books",
+                bookRequest, BookResponseDto.class);
+        Long bookId = bookResponse.getBody().id();
+
+        int threadCount = 100;
+        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
+        CountDownLatch startLatch = new CountDownLatch(1);
+        CountDownLatch doneLatch = new CountDownLatch(threadCount);
+
+        List<Future<ResponseEntity<LoanResponseDto>>> futures = new java.util.ArrayList<>();
+
+        for (int i = 0; i < threadCount; i++) {
+            futures.add(executor.submit(() -> {
+                try {
+                    startLatch.await();
+                    LoanRequestDto loanRequest = new LoanRequestDto(bookId);
+                    return restTemplate.postForEntity("/api/v1/loans", loanRequest, LoanResponseDto.class);
+                } finally {
+                    doneLatch.countDown();
+                }
+            }
+            ));
+        }
+
+        startLatch.countDown();
+        doneLatch.await();
+        executor.shutdown();
+
+        List<ResponseEntity<LoanResponseDto>> responses = futures.stream()
+                .map(f -> {
+                    try { return f.get(); }
+                    catch (Exception e) { throw new RuntimeException(e); }
+                })
+                .toList();
+
+        assertThat(loanRepository.count()).isEqualTo(1);
+
+        assertThat(responses.stream()
+                .filter(r -> r.getStatusCode() == HttpStatus.CREATED)
+                .count()).isEqualTo(1);
+
+            assertThat(responses.stream()
+                .filter(r -> r.getStatusCode() == HttpStatus.CONFLICT)
+                .count()).isEqualTo(99);
+    }
 }
